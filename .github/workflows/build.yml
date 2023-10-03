@@ -13,4 +13,4 @@ jobs:
         node-version: v18.17.1
     
     - name: install dependencies
-      uses: npm install
+      run: npm install
