@@ -1,17 +1,8 @@
-name: Integration Tests
-'on':
-  push:
-    branches:
-      - webapp_assignment3
+name: hello-world
+on: push
 jobs:
-  test:
+  my-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: v18.17.1
-      - name: run the dependencies
-        uses: npm install
+      - name: my-step
+        run: echo "Hello World!"
