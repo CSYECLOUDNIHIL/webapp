@@ -1,0 +1,19 @@
+name: Integration Tests
+
+on:
+  pull_request:
+    branches:
+      - webapp_assignment3  
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 'v18.17.1'
