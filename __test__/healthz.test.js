@@ -1,5 +1,5 @@
-import supertest from 'supertest';
-import app, { startServer } from '../server.js';
+const app = require('../server');
+const request = require("supertest");
 
 describe('health endpoint', () => {
     beforeAll(() => {
