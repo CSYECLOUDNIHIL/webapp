@@ -21,6 +21,9 @@
     "supertest": "^6.3.3"
   },
   "scripts": {
-    "test": "jest"
+    "test": "babel-jest" 
+  },
+  "babel": {
+    "presets": ["@babel/preset-env"]
   }
 }
