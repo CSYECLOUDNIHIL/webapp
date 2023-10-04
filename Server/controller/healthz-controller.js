@@ -8,7 +8,7 @@ async function currentDate() {
 }
 
 async function connection() {
-    //const connection = await sequelize.sync();
+    const connection = await sequelize.sync();
     try {
         if (connection) {
             return true;
