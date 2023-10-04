@@ -36,3 +36,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: v18.17.1
+      - name: install the dependencies
+        run: npm install
+      
+      - name: install jest
+        run: npm install jest
+
+      - name: run the integration test
+        run: npm test
