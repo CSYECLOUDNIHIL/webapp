@@ -5,16 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TEST_COMMAND: "npm test"
-      DB_DIALECT: "${{ secrets.DB_DIALECT }}"
-      DB_HOST: "${{ secrets.DB_HOST }}"
-      DB_PORT: "${{ secrets.DB_PORT }}"
-      DB_USERNAME: "${{ secrets.DB_USERNAME }}"
-      DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
-      DB_NAME_CREATED: "${{ secrets.DB_NAME_CREATED }}"
-      DB_NAME_DEFAULT: "${{ secrets.DB_NAME_DEFAULT }}"
-      DB_LOGGING: "${{ secrets.DB_LOGGING }}"
-      CSV_LOCATION: "${{ secrets.CSV_LOCATION }}"
-      SERVER_PORT: "${{ secrets.SERVER_PORT }}"
     services:
       postgres:
         image: postgres:latest
@@ -37,24 +27,27 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: v18.17.1
-      - name: install the dependencies
+      - name: Install the dependencies
         run: npm install
 
-      - name: run the integration test
-        env: 
-          DB_DIALECT: "${{ secrets.DB_DIALECT }}"
-          DB_HOST: "${{ secrets.DB_HOST }}"
-          DB_PORT: "${{ secrets.DB_PORT }}"
-          DB_USERNAME: "${{ secrets.DB_USERNAME }}"
-          DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
-          DB_NAME_CREATED: "${{ secrets.DB_NAME_CREATED }}"
-          DB_NAME_DEFAULT: "${{ secrets.DB_NAME_DEFAULT }}"
-          DB_LOGGING: "${{ secrets.DB_LOGGING }}"
-          CSV_LOCATION: "${{ secrets.CSV_LOCATION }}"
-          SERVER_PORT: "${{ secrets.SERVER_PORT }}"
+      - name: Create .env file
+        run: touch .env
+
+      - name: Open .env file for manual editing
+        run: vi .env
+
+      - name: Save .env file
         run: |
-          npm test
-          if [ $? -ne 0 ]; then
-            echo "Tests failed. Exiting..."
-            exit 1
-          fi
+          echo "DB_DIALECT=postgres" >> .env
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "DB_USERNAME=postgres" >> .env
+          echo "DB_PASSWORD=Assasinscreed2!" >> .env
+          echo "DB_NAME_CREATED=healthz" >> .env
+          echo "DB_NAME_DEFAULT=postgres" >> .env
+          echo "DB_LOGGING=false" >> .env
+          echo "CSV_LOCATION=./opt/users.csv" >> .env
+          echo "SERVER_PORT=3001" >> .env
+
+      - name: run the integration
+        run: npm test
