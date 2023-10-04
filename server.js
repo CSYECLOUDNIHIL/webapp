@@ -14,7 +14,7 @@ dotenv.config();
 const port = process.env.SERVER_PORT;
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 
 const decryptrion = async (obj) => {
@@ -43,7 +43,7 @@ const loadCsvFile  = async () => {
 
 }
 
-async function startServer() {
+export async function startServer() {
     route(app);
     app.listen(port, () => console.log(`Connected to localhost (127.0.0.1) port ${port} (#0)`));
     try {

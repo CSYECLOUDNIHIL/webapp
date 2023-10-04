@@ -9,10 +9,11 @@ describe('GET /healthz', () => {
     app = await serverModule.startServer();
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     // Clean up after the tests if needed
-    app.close();
+    await app.close();
   });
+  
 
   test('It should respond 200', async () => {
     const response = await request(app).get('/healthz');
