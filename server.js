@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+let server;
 const decryptrion = async (obj) => {
     const hashpassword =  bcrypt.hash(obj,10);
     return hashpassword;
@@ -45,7 +45,7 @@ const loadCsvFile  = async () => {
 
 export async function startServer() {
     route(app);
-    app.listen(port, () => console.log(`Connected to localhost (127.0.0.1) port ${port} (#0)`));
+    server = app.listen(port, () => console.log(`Connected to localhost (127.0.0.1) port ${port} (#0)`));
     try {
         try {
             await sequelize.sync({ alter: true });
