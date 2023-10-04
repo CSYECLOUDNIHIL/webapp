@@ -56,7 +56,8 @@ jobs:
           echo "DB_LOGGING=${{ secrets.DB_LOGGING }}" >> .env
           echo "CSV_LOCATION=${{ secrets.CSV_LOCATION }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
-
+      - name: checking .env file
+        run: cat .env
       - name: run the integration
         run: |
           source .env 
