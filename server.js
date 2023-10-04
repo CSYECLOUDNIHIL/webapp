@@ -107,8 +107,6 @@ export async function startServer() {
     catch (error) {
        // console.log("the db is down");
     }
-    
-
 }
 
 
