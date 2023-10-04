@@ -20,7 +20,7 @@ jobs:
         run: |
           if [ "$DB_USERNAME" == "postgre" ]
           then 
-            echo "DB_USERNAME is 'postgre'"
+            echo "DB_USERNAME is "
           else
             echo "DB_USERNAME is not 'postgre'"
           fi
