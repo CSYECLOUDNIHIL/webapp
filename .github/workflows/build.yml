@@ -23,8 +23,8 @@ jobs:
           POSTGRES_DB: '${{ env.DB_NAME_created }}'
         ports:
           - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U ${{ env.DB_USERNAME }}"
+        options: >- 
+          --health-cmd="pg_isready -U ${{ services.postgres.env.POSTGRES_USER }}"
           --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout Code
