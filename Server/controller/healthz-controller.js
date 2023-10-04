@@ -45,6 +45,7 @@ const index = async (request, response) => {
             response.status(200).send(); //json({ message: '200 ok' });
         }
     } catch (error) {
+        console.log(error)
         response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
         response.set('Pragma', 'no-cache');
         response.setHeader('X-Content-Type-Options', 'nosniff');
