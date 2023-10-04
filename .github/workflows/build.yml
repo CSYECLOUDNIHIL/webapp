@@ -4,6 +4,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
+      TEST_COMMAND: "npm test"
       DB_DIALECT: "${{ secrets.DB_DIALECT }}"
       DB_HOST: "${{ secrets.DB_HOST }}"
       DB_PORT: "${{ secrets.DB_PORT }}"
