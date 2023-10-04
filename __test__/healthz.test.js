@@ -1,15 +1,13 @@
+import supertest from 'supertest';
+import app, { startServer } from '../server.js';
 
-const request = require("supertest");
-const app = require('../server');
-
-describe("GET /healthz ", () => {
-
-    test("It should respond 200", async () => {
-  
-      const response = await request(app).get("/healthz");
-  
-      expect(response.statusCode).toBe(200);
-  
+describe('health endpoint', () => {
+    beforeAll(() => {
+        startServer(); // Start the server before running tests
     });
-  
-  });
+
+    it('success criteria return 200 ok', async () => {
+        const response = await supertest(app).get('/healthz');
+        expect(response.status).toBe(200);
+    });
+});
