@@ -18,4 +18,4 @@ jobs:
     steps:
       - name: Checkout Code
         run: |
-          echo "github details: ${{ SECRETS.DB_USERNAME }}"
+          echo "github details: ${{ secrets.DB_USERNAME }}"
