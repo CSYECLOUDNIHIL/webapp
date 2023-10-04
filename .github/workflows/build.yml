@@ -1,41 +1,37 @@
 name: hello-world
-on: push
+'on': push
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      DB_DIALECT: ${{ secrets.DB_DIALECT }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME_CREATED: ${{ secrets.DB_NAME_CREATED }}
-      DB_NAME_DEFAULT: ${{ secrets.DB_NAME_DEFAULT }}
-      DB_LOGGING: ${{ secrets.DB_LOGGING }}
-      CSV_LOCATION: ${{ secrets.CSV_LOCATION }}
-      SERVER_PORT: ${{ secrets.SERVER_PORT }}
-
+      DB_DIALECT: '${{ secrets.DB_DIALECT }}'
+      DB_HOST: '${{ secrets.DB_HOST }}'
+      DB_PORT: '${{ secrets.DB_PORT }}'
+      DB_USERNAME: '${{ secrets.DB_USERNAME }}'
+      DB_PASSWORD: '${{ secrets.DB_PASSWORD }}'
+      DB_NAME_CREATED: '${{ secrets.DB_NAME_CREATED }}'
+      DB_NAME_DEFAULT: '${{ secrets.DB_NAME_DEFAULT }}'
+      DB_LOGGING: '${{ secrets.DB_LOGGING }}'
+      CSV_LOCATION: '${{ secrets.CSV_LOCATION }}'
+      SERVER_PORT: '${{ secrets.SERVER_PORT }}'
     services:
       postgres:
-        image: postgres:latest
+        image: 'postgres:latest'
         env:
-          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DB_NAME_CREATED }}
+          POSTGRES_USER: '${{ secrets.DB_USERNAME }}'
+          POSTGRES_PASSWORD: '${{ secrets.DB_PASSWORD }}'
+          POSTGRES_DB: '${{ secrets.DB_NAME_CREATED }}'
         ports:
-          - 5432:5432
-        options: --health-cmd="pg_isready -U ${{ secrets.DB_USERNAME }}" --health-interval=10s --health-timeout=5s --health-retries=3
-        
+          - '5432:5432'
+        options: >-
+          --health-cmd="pg_isready -U ${{ secrets.DB_USERNAME }}"
+          --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: v18.17.1
-    
-    - name: install dependencies
-      run: npm install
-
-    
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: v18.17.1
+      - name: install dependencies
+        run: npm install
