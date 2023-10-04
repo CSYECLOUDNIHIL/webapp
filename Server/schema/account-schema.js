@@ -1,12 +1,12 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../../config/dbconfig.js';
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = require('../../config/dbconfig.js');
 
 const account = sequelize.define('account', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: false,
-    readonly: true
+    readonly: true,
   },
   first_name: {
     type: DataTypes.STRING,
@@ -17,13 +17,12 @@ const account = sequelize.define('account', {
     type: DataTypes.STRING,
     primaryKey: false,
     allowNull: false,
-    
   },
   password: {
     type: DataTypes.STRING,
     primaryKey: false,
     allowNull: false,
-    writeonly: true
+    writeonly: true,
   },
   email: {
     type: DataTypes.STRING,
@@ -35,17 +34,15 @@ const account = sequelize.define('account', {
     primaryKey: false,
     allowNull: false,
     readonly: true,
-    defaultValue: new Date()
-    
+    defaultValue: new Date(),
   },
   account_updated: {
     type: DataTypes.DATE,
     primaryKey: false,
     allowNull: false,
     readonly: true,
-    defaultValue: new Date()
+    defaultValue: new Date(),
   },
 });
 
-
-export default account;
+module.exports = account;

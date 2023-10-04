@@ -1,12 +1,12 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../../config/dbconfig.js';
+const { DataTypes } = require('sequelize');
+const sequelize = require('../../config/dbconfig.js');
 
 const assignment = sequelize.define('assignment', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: false,
-    readonly: true
+    readonly: true,
   },
   name: {
     type: DataTypes.STRING,
@@ -19,9 +19,8 @@ const assignment = sequelize.define('assignment', {
     allowNull: false,
     validate: {
       min: 1,
-      max: 10
-  }
-    
+      max: 10,
+    },
   },
   num_of_attemps: {
     type: DataTypes.INTEGER,
@@ -29,8 +28,8 @@ const assignment = sequelize.define('assignment', {
     allowNull: false,
     validate: {
       min: 0,
-      max: 3
-    }
+      max: 3,
+    },
   },
   deadline: {
     type: DataTypes.DATE,
@@ -42,25 +41,15 @@ const assignment = sequelize.define('assignment', {
     primaryKey: false,
     allowNull: false,
     readonly: true,
-    defaultValue: new Date()
-    
+    defaultValue: new Date(),
   },
   assignment_updated: {
     type: DataTypes.DATE,
     primaryKey: false,
     allowNull: false,
     readonly: true,
-    defaultValue: new Date()
-    
+    defaultValue: new Date(),
   },
-  assignment_updated: {
-    type: DataTypes.DATE,
-    primaryKey: false,
-    allowNull: false,
-    readonly: true,
-    defaultValue: new Date()
-    
-  }, 
   created_by: {
     type: DataTypes.STRING,
     primaryKey: false,
@@ -72,13 +61,7 @@ const assignment = sequelize.define('assignment', {
     primaryKey: true,
     allowNull: false,
     readonly: true,
-  }
+  },
 });
 
-
-
-
-
-
-
-export default assignment;
+module.exports = assignment;

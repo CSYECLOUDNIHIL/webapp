@@ -1,22 +1,17 @@
-import * as serverModule from '../server'; // Import the server.js
-import request from 'supertest';
+const request = require('supertest');
+const express = require("express");
+const app = express();
+
+const route = require('../Server/router/healthz-router.js');
+app.use('/healthz',route);
+
+
 
 describe('GET /healthz', () => {
-  let app;
-  console.log(process.env.DB_NAME_PORT);
-  beforeAll(async () => {
-    // Start the server
-    app = await serverModule.startServer();
-  });
-
-  afterAll(async () => {
-    // Clean up after the tests if needed
-    await serverModule.stopServer();
-  });
-  
-
-  test('It should respond 200', async () => {
+  it('should respond with status 200', async () => {
     const response = await request(app).get('/healthz');
-    expect(response.statusCode).toBe(200);
+    expect(response.status).toBe(200);
   });
+
+  // Add more test cases as needed for your API endpoints
 });
