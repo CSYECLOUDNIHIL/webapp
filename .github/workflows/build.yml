@@ -14,19 +14,13 @@ jobs:
       DB_LOGGING: '${{ secrets.DB_LOGGING }}'
       CSV_LOCATION: '${{ secrets.CSV_LOCATION }}'
       SERVER_PORT: '${{ secrets.SERVER_PORT }}'
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: ${{ env.DB_USERNAME }}
-          POSTGRES_PASSWORD: '${{ env.DB_PASSWORD }}'
-          POSTGRES_DB: '${{ env.DB_NAME_CREATED }}'
-        ports:
-          - 5432:5432
-        options: >- 
-          --health-cmd="pg_isready -U ${{ secrets.DB_USERNAME }}"
-          --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
+      - name: Set up Environment Variables
+        run: |
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "DB_NAME_CREATED=${{ secrets.DB_NAME_CREATED }}" >> $GITHUB_ENV
       - name: Checkout Code
         uses: actions/checkout@v2
       - name: Set up Node.js
