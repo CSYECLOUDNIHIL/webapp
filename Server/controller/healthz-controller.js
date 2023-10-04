@@ -16,7 +16,6 @@ async function connection() {
             return false;
         }
     } catch (err) {
-        console.log('hello');
         return false;
     }
 }
