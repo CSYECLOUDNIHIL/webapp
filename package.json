@@ -12,5 +12,9 @@
     "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  }
 }

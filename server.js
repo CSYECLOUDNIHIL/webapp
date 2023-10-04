@@ -43,7 +43,7 @@ const loadCsvFile  = async () => {
 
 }
 
-async function startServer() {
+export async function startServer() {
     route(app);
     app.listen(port, () => console.log(`Connected to localhost (127.0.0.1) port ${port} (#0)`));
     try {
