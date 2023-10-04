@@ -14,7 +14,7 @@ jobs:
       DB_LOGGING: '${{ secrets.DB_LOGGING }}'
       CSV_LOCATION: '${{ secrets.CSV_LOCATION }}'
       SERVER_PORT: '${{ secrets.SERVER_PORT }}'
-    service:
+    services:
       postgres:
         image: postgres:latest
         env:
