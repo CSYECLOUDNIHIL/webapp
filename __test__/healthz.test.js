@@ -1,20 +1,21 @@
-import supertest from 'supertest';
-import { startServer } from '../server.js'; // Import `startServer` directly if it's exported
+import { startServer } from '../server'; // Import the server.js
+import request from 'supertest';
 
-describe('health endpoint', () => {
-  let server;
+describe('GET /healthz', () => {
+  let app;
 
   beforeAll(async () => {
-    server = await startServer();
+    // Start the server
+    app = await startServer();
   });
 
-  afterAll(async () => {
-    // Close the server after all tests
-    await server.close();
+  afterAll(() => {
+    // Clean up after the tests if needed
+    app.close();
   });
 
-  it('success criteria return 200 ok', async () => {
-    const response = await supertest(server).get('/healthz');
-    expect(response.status).toBe(200);
+  test('It should respond 200', async () => {
+    const response = await request(app).get('/healthz');
+    expect(response.statusCode).toBe(200);
   });
 });
