@@ -5,6 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TEST_COMMAND: "npm test"
+      DB_DIALECT: "${{ secrets.DB_DIALECT }}"
+      DB_HOST: "${{ secrets.DB_HOST }}"
+      DB_PORT: "${{ secrets.DB_PORT }}"
+      DB_USERNAME: "${{ secrets.DB_USERNAME }}"
+      DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
+      DB_NAME_CREATED: "${{ secrets.DB_NAME_CREATED }}"
+      DB_NAME_DEFAULT: "${{ secrets.DB_NAME_DEFAULT }}"
+      DB_LOGGING: "${{ secrets.DB_LOGGING }}"
+      CSV_LOCATION: "${{ secrets.CSV_LOCATION }}"
+      SERVER_PORT: "${{ secrets.SERVER_PORT }}"
     services:
       postgres:
         image: postgres:latest
@@ -27,8 +37,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: v18.17.1
-      - name: Install the dependencies
+      - name: install the dependencies
         run: npm install
+
 
       - name: Create .env file
         run: touch .env
