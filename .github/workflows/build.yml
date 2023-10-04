@@ -23,4 +23,4 @@ jobs:
         with:
           node-version: v18.17.1
       - name: Echo DB_LOGGING
-        run: echo `DB_LOGGING value is $DB_LOGGING`
+        run: echo "DB_LOGGING value is ${{ secrets.SERVER_PORT }}"
