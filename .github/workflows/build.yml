@@ -21,4 +21,5 @@ jobs:
           if [ "$DB_USERNAME" == "postgre"]
           then 
             echo "true"
+          fi
 
