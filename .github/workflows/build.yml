@@ -18,8 +18,7 @@ jobs:
     steps:
       - name: Checkout Code
         run: |
-          if [ "$DB_USERNAME" == "postgre"]
+          if [ "$DB_USERNAME" == "postgre" ]
           then 
             echo "true asdasd"
           fi
-
