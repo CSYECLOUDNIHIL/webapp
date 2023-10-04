@@ -1,4 +1,4 @@
-import { startServer } from '../server'; // Import the server.js
+import * as server from '../server'; // Import the server.js
 import request from 'supertest';
 
 describe('GET /healthz', () => {
@@ -6,7 +6,7 @@ describe('GET /healthz', () => {
 
   beforeAll(async () => {
     // Start the server
-    app = await startServer();
+    app = await server.startServer();
   });
 
   afterAll(() => {
