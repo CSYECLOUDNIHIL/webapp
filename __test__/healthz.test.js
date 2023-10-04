@@ -7,7 +7,7 @@ describe('health endpoint', () => {
     });
 
     it('success criteria return 200 ok', async () => {
-        const response = await supertest(app).get('/healthz');
+        const response = await request(app).get('/healthz');
         expect(response.status).toBe(200);
     });
 });
