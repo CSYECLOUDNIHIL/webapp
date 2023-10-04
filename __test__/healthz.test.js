@@ -3,7 +3,7 @@ import request from 'supertest';
 
 describe('GET /healthz', () => {
   let app;
-
+  console.log(process.env.DB_NAME_PORT);
   beforeAll(async () => {
     // Start the server
     app = await serverModule.startServer();
