@@ -1,14 +1,9 @@
-import startServer from '../server.js';
 import supertest from 'supertest';
+import  startServer from '../server.js';
 
 describe('health endpoint', () => {
-  let server;
-
-  beforeAll(async () => {
-    server = await startServer();
-  });
-  it('success criteria return 200 ok', async () => {
-    const response = await supertest(server).get('/healthz');
-    expect(response.status).toBe(200);
-  });
+    it('success criteria return 200 ok', async () => {
+        const response = await supertest(await startServer ()).get('/healthz');
+        expect(response.status).toBe(200);
+    });
 });
