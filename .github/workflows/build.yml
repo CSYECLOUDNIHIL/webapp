@@ -14,23 +14,8 @@ jobs:
       DB_LOGGING: "${{ secrets.DB_LOGGING }}"
       CSV_LOCATION: "${{ secrets.CSV_LOCATION }}"
       SERVER_PORT: "${{ secrets.SERVER_PORT }}"
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: "${{ secrets.DB_USERNAME }}"
-          POSTGRES_PASSWORD: "${{ secrets.DB_PASSWORD }}"
-          POSTGRES_DB: "${{ secrets.DB_NAME_CREATED }}"
-        ports:
-          - 5432:5432
-        options: >- 
-          --health-cmd="pg_isready -U postgres
-          --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: v18.17.1
+        run: |
+          echo "github details: ${{ secrets.DB_USERNAME }}"
