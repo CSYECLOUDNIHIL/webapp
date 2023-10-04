@@ -1,26 +1,26 @@
 name: hello-world
-'on': push
+on: push
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      DB_DIALECT: '${{ secrets.DB_DIALECT }}'
-      DB_HOST: '${{ secrets.DB_HOST }}'
-      DB_PORT: '${{ secrets.DB_PORT }}'
-      DB_USERNAME: '${{ secrets.DB_USERNAME }}'
-      DB_PASSWORD: '${{ secrets.DB_PASSWORD }}'
-      DB_NAME_CREATED: '${{ secrets.DB_NAME_CREATED }}'
-      DB_NAME_DEFAULT: '${{ secrets.DB_NAME_DEFAULT }}'
-      DB_LOGGING: '${{ secrets.DB_LOGGING }}'
-      CSV_LOCATION: '${{ secrets.CSV_LOCATION }}'
-      SERVER_PORT: '${{ secrets.SERVER_PORT }}'
+      DB_DIALECT: "${{ secrets.DB_DIALECT }}"
+      DB_HOST: "${{ secrets.DB_HOST }}"
+      DB_PORT: "${{ secrets.DB_PORT }}"
+      DB_USERNAME: "${{ secrets.DB_USERNAME }}"
+      DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
+      DB_NAME_CREATED: "${{ secrets.DB_NAME_CREATED }}"
+      DB_NAME_DEFAULT: "${{ secrets.DB_NAME_DEFAULT }}"
+      DB_LOGGING: "${{ secrets.DB_LOGGING }}"
+      CSV_LOCATION: "${{ secrets.CSV_LOCATION }}"
+      SERVER_PORT: "${{ secrets.SERVER_PORT }}"
     services:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: ${{ env.DB_USERNAME }}
-          POSTGRES_PASSWORD: '${{ env.DB_PASSWORD }}'
-          POSTGRES_DB: '${{ env.DB_NAME_CREATED }}'
+          POSTGRES_USER: "${{ env.DB_USERNAME }}"
+          POSTGRES_PASSWORD: "${{ env.DB_PASSWORD }}"
+          POSTGRES_DB: "${{ env.DB_NAME_CREATED }}"
         ports:
           - 5432:5432
         options: >- 
@@ -28,11 +28,6 @@ jobs:
           --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Set up Environment Variables
-        run: |
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
-          echo "DB_NAME_CREATED=${{ secrets.DB_NAME_CREATED }}" >> $GITHUB_ENV
       - name: Checkout Code
         uses: actions/checkout@v2
       - name: Set up Node.js
