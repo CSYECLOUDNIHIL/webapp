@@ -11,7 +11,7 @@ describe('GET /healthz', () => {
 
   afterAll(async () => {
     // Clean up after the tests if needed
-    await app.close();
+    await serverModule.stopServer();
   });
   
 

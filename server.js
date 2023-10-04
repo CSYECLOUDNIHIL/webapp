@@ -111,4 +111,17 @@ export async function startServer() {
 
 }
 
+
+export const stopServer = async () => {
+    if (server) {
+        server.close((err) => {
+            if (err) {
+                console.error('Error while stopping the server:', err);
+            } else {
+                console.log('Server stopped');
+            }
+        });
+    }
+}
+
 startServer();
