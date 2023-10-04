@@ -44,4 +44,9 @@ jobs:
         run: npm install jest
 
       - name: run the integration test
-        run: npm test
+        run: |
+          npm test
+          if [ $? -ne 0 ]; then
+            echo "Tests failed. Exiting..."
+            exit 1
+          fi
