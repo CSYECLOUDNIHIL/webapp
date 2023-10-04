@@ -1,4 +1,4 @@
-import * as server from '../server'; // Import the server.js
+import * as serverModule from '../server'; // Import the server.js
 import request from 'supertest';
 
 describe('GET /healthz', () => {
@@ -6,7 +6,7 @@ describe('GET /healthz', () => {
 
   beforeAll(async () => {
     // Start the server
-    app = await server.startServer();
+    app = await serverModule.startServer();
   });
 
   afterAll(() => {
