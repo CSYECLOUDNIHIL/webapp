@@ -75,10 +75,5 @@ The CI check should run the integration tests for the /healthz endpoint.
 Implement Integration Tests
 Implement integration tests (not unit tests) for the /healthz endpoint. Test for success criteria, and there's no need to test for failures.
 
-Your GitHub Actions workflow should install and set up actual MySQL and PostgreSQL instances, providing the necessary configuration for the application to connect to them.
-
-By following these requirements, you can build a robust RESTful API project with proper database management, user authentication, and integration testing.
-
-
 
 
