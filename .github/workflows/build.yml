@@ -1,5 +1,8 @@
-name: hello-world
-on: push
+name: Integration Test
+on:
+  pull_request:
+    branches:
+      - main
 jobs:
   test:
     runs-on: ubuntu-latest

@@ -42,7 +42,6 @@ route(app);
 app.listen(port, () => console.log(`Connected to localhost (127.0.0.1) port ${port} (#0)`));
 try {
     try {
-        console.log("entered here")
         await sequelize.sync({ alter: true });
         console.log("connection established and the database is present");
     }

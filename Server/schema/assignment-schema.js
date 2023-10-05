@@ -5,7 +5,7 @@ const assignment = sequelize.define('assignment', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
-    primaryKey: false,
+    primaryKey: true,
     readonly: true,
   },
   name: {
@@ -58,7 +58,7 @@ const assignment = sequelize.define('assignment', {
   },
   updated_by: {
     type: DataTypes.STRING,
-    primaryKey: true,
+    primaryKey: false,
     allowNull: false,
     readonly: true,
   },

@@ -5,6 +5,27 @@ const bcrypt = require('bcrypt');
 const { Sequelize, Op } = require('sequelize');
 const { responseHeaders } = require('../response/response-methods.js');
 
+const  checkInvalidColumn = async (invalid) => {
+    const columnArray = {};
+    const columns = ['name','points','num_of_attemps','deadline'];
+    for (const column of columns) {
+      if (invalid.hasOwnProperty(column)) {
+        columnArray[column] = invalid[column];
+      } else {
+        return false; // Return false if an invalid key is found
+      }
+    }
+
+/*     const extraKeys = Object.keys(invalid).filter((column) => !columns.includes(column));
+
+    if (extraKeys.length > 0) {
+      return false; // Return false if extra keys are found
+    } */
+    return columnArray;
+  }
+
+
+
 const decryptrion = async (credentials) => {
     const account_data = await account.findAll({
         attributes: ['email', 'password'],
@@ -70,14 +91,15 @@ const index = async (request, response) => {
             const passMatch = await decryptrion(credentials);
 
             if (passMatch) {
-                const account_data = await assignment.findAll({
-                    where: {
-                        created_by: credentials.username
-                    }
-                });
+                const account_data = await assignment.findAll();
+                console.log(account_data);
                 if (account_data) {
                     await responseHeaders(response);
                     response.status(200).json(account_data);
+                }
+                else {
+                    await responseHeaders(response);
+                    response.status(404).send();
                 }
             } else {
                 await responseHeaders(response);
@@ -100,19 +122,21 @@ const getbyone = async (request, response) => {
             response.status(400).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (await connection()) {
             const credentials = await authenticateUser(request);
-            const passMatch = await decryptrion(credentials);
-            if (passMatch == true) {
+            const passMatch = await decryptrion(credentials);request.params.id
+            if (passMatch) {
                 await responseHeaders(response);
                 const requestBody = request.body;
-
-                const createAssignment = await checkId(request.params.id, credentials);
-
+                const createAssignment = await assignment.findOne({
+                    where: {
+                        id: request.params.id
+                    }
+                })
                 if (createAssignment) {
                     await responseHeaders(response);
-                    response.status(200).send();
+                    response.status(200).json(createAssignment);
                 } else {
                     await responseHeaders(response);
-                    response.status(200).send();
+                    response.status(404).send();
                 }
             } else {
                 await responseHeaders(response);
@@ -134,6 +158,8 @@ const getbyone = async (request, response) => {
 };
 
 const post = async (request, response) => {
+
+
     try {
         if (request.get('Content-Length') == 0) {
             await responseHeaders(response);
@@ -148,15 +174,27 @@ const post = async (request, response) => {
                 await responseHeaders(response);
                 const requestBody = request.body;
 
-                const createAssignment = await assignment.create({
-                    name: request.body.name,
-                    points: request.body.points,
-                    num_of_attemps: request.body.num_of_attemps,
-                    deadline: request.body.deadline,
-                    created_by: credentials.username,
-                    updated_by: credentials.username
-                });
-                setSuccessfulResponse(createAssignment, response);
+                const columnInvalidFlag = await checkInvalidColumn(request.body);
+                console.log(columnInvalidFlag !=null)
+                if(columnInvalidFlag !=null) {
+                    console.log("here");
+                    const createAssignment = await assignment.create({
+                        name: request.body.name,
+                        points: request.body.points,
+                        num_of_attemps: request.body.num_of_attemps,
+                        deadline: request.body.deadline,
+                        created_by: credentials.username,
+                        updated_by: credentials.username
+                    });
+                    console.log(createAssignment);
+                    setSuccessfulResponse(createAssignment, response);
+                }
+                else {
+                    await responseHeaders(response);
+                    response.status(400).send();
+                }
+                
+                
             } else {
                 await responseHeaders(response);
                 response.status(401).send();
@@ -175,6 +213,24 @@ const post = async (request, response) => {
         }
     }
 };
+
+
+
+const updatenotallowed = async (request, response) => {
+    try {
+            await responseHeaders(response);
+            response.status(405).send();
+    } catch (error) {
+        if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+            await responseHeaders(response);
+            response.status(400).send();
+        } else {
+            await responseHeaders(response);
+            response.status(503).send();
+        }
+    }
+};
+
 
 const update = async (request, response) => {
     try {
@@ -236,7 +292,7 @@ const deleteRecord = async (request, response) => {
         } else if (await connection()) {
             const credentials = await authenticateUser(request);
             const passMatch = await decryptrion(credentials);
-            if (passMatch == true) {
+            if (passMatch) {
                 await responseHeaders(response);
                 const createAssignment = await checkId(request.params.id, credentials);
 
@@ -246,7 +302,7 @@ const deleteRecord = async (request, response) => {
                     response.status(204).send();
                 } else {
                     await responseHeaders(response);
-                    response.status(404).send();
+                    response.status(401).send();
                 }
             } else {
                 await responseHeaders(response);
@@ -267,5 +323,6 @@ module.exports = {
     getbyone,
     post,
     update,
-    deleteRecord
+    deleteRecord,
+    updatenotallowed
 };
