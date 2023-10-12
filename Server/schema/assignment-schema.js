@@ -41,14 +41,12 @@ const assignment = sequelize.define('assignment', {
     primaryKey: false,
     allowNull: false,
     readonly: true,
-    defaultValue: new Date(),
   },
   assignment_updated: {
     type: DataTypes.DATE,
     primaryKey: false,
     allowNull: false,
     readonly: true,
-    defaultValue: new Date(),
   },
   created_by: {
     type: DataTypes.STRING,
