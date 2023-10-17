@@ -42,7 +42,7 @@ jobs:
           ls -a
           current_directory=$(pwd)
           # Echo the value of the variable
-          echo "$current_directory"
+          echo "hello $current_directory"
                 
       - name: Run Packer Build
         run: packer fmt ./packer/aws-debian.pkr.hcl
