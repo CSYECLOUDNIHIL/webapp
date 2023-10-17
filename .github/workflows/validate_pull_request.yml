@@ -49,18 +49,6 @@ jobs:
           echo "DB_LOGGING=${{ secrets.DB_LOGGING }}" >> .env
           echo "CSV_LOCATION=${{ secrets.CSV_LOCATION }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
-          
-      - name: Zip webapp contents
-        run: |
-          zip -r webapp.zip ./
-      
-      - name: list files
-        run: |
-          ls -a
-          current_directory=$(pwd)
-          # Echo the value of the variable
-          echo "$current_directory"
-      
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:

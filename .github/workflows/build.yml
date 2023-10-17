@@ -22,10 +22,60 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        
+      - name: Install Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          packer_version: '1.8.6'
+      - name: Initialize Packer
+        run: packer init ./packer/
+       
+      - name: Create .env file
+        run: touch .env
+
+      - name: Save .env file
+        run: |
+          echo "DB_DIALECT=${{ secrets.DB_DIALECT }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME_CREATED=${{ secrets.DB_NAME_CREATED }}" >> .env
+          echo "DB_NAME_DEFAULT=${{ secrets.DB_NAME_DEFAULT }}" >> .env
+          echo "DB_LOGGING=${{ secrets.DB_LOGGING }}" >> .env
+          echo "CSV_LOCATION=${{ secrets.CSV_LOCATION }}" >> .env
+          echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+          
+      - name: Zip webapp contents
+        run: |
+          zip -r webapp.zip ./
+      
       - name: list files
         run: |
           ls -a
           current_directory=$(pwd)
           # Echo the value of the variable
           echo "$current_directory"
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: v18.17.1
+      - name: install the dependencies
+        run: npm install
+
+      - name: run the integration
+        run: |
+          source .env 
+          npm test
+                
+      - name: creating the aws cli configuration in yaml
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
