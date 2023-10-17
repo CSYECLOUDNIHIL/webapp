@@ -48,4 +48,4 @@ jobs:
         run: packer fmt ./packer/aws-debian.pkr.hcl
 
       - name: Run Packer Validate
-        run: packer validate -var "path=$current_directory/backendApp.zip" ./packer/aws-debian.pkr.hcl
+        run: packer validate -var "path=$current_directory/webapp.zip" ./packer/aws-debian.pkr.hcl
