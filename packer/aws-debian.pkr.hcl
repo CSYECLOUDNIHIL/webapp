@@ -127,6 +127,6 @@ build {
   }
 
     provisioner "shell" {
-    script = "./ap.sh"
+    script = "./app.sh"
   }
 }
