@@ -89,5 +89,5 @@ jobs:
             -var 'aws_ami_owner_dev=${{secrets.AWS_DEMO_ID}}' \
             -var 'aws_ami_owner_demo=${{secrets.AWS_DEV_ID}}' \
             -var 'aws_ami_region=${{secrets.AWS_REGION}}' \
-            -var "path=$(current_directory)/webapp.zip" aws-debian.pkr.hcl
+            -var "path=/home/runner/work/webapp/webapp/webapp.zip" aws-debian.pkr.hcl
         
