@@ -22,3 +22,10 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    steps:
+      - name: list files
+        run: |
+          ls -a
+          current_directory=$(pwd)
+          # Echo the value of the variable
+          echo "$current_directory"
