@@ -1,6 +1,6 @@
-name: Integration Test
+name: pr merge after the validate is complete
 on:
-  pull_request:
+  push:
     branches:
       - main
 jobs:
