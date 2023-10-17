@@ -98,7 +98,7 @@ source "amazon-ebs" "debian-aws-ami" {
   ami_description = "Assignment 5 AMI"
   ssh_username    = "${var.ssh_username}"
   subnet_id       = "${var.subnet_id}"
-  ami_users        = ["${var.aws_ami_owner_dev}","${var.aws_ami_owner_demo}"]
+  ami_users        = ['250820048302']
   aws_polling {
     delay_seconds = 120
     max_attempts  = 50
