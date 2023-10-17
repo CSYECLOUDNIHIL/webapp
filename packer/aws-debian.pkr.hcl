@@ -118,7 +118,7 @@ build {
   ]
 
   provisioner "file" {
-    source      = "${var.path}/webapp.zip"
+    source      = "${var.path}"
     destination = "/home/admin/webapp.zip"
   }
   provisioner "shell" {
