@@ -1,6 +1,6 @@
-name: Integration Test
+name: pr merge after the validate is complete
 on:
-  pull_request:
+  push:
     branches:
       - main
 jobs:
@@ -26,14 +26,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-        
-      - name: Install Packer
-        uses: hashicorp/setup-packer@main
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          packer_version: '1.8.6'
-      - name: Initialize Packer
-        run: packer init ./packer/
-       
+          node-version: v18.17.1
+      - name: install the dependencies
+        run: npm install
+
+
       - name: Create .env file
         run: touch .env
 
@@ -49,32 +49,9 @@ jobs:
           echo "DB_LOGGING=${{ secrets.DB_LOGGING }}" >> .env
           echo "CSV_LOCATION=${{ secrets.CSV_LOCATION }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
-          
-      - name: Zip webapp contents
-        run: |
-          zip -r webapp.zip ./
-      
-      - name: list files
-        run: |
-          ls -a
-          current_directory=$(pwd)
-          # Echo the value of the variable
-          echo "$current_directory"
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: v18.17.1
-      - name: install the dependencies
-        run: npm install
-
+      - name: checking .env file
+        run: cat .env
       - name: run the integration
         run: |
           source .env 
           npm test
-                
-      - name: Run Packer Build
-        run: packer fmt ./packer/aws-debian.pkr.hcl
-
-      - name: Run Packer Validate
-        run: packer validate ./packer/aws-debian.pkr.hcl
