@@ -40,12 +40,10 @@ jobs:
       - name: list files
         run: |
           ls -a
-          pwd_path=$(pwd)
-      - name: list files
-        run: echo "My variable value is ${{ pwd_path }}"
+          pwd
       
       - name: Run Packer Build
         run: packer fmt ./packer/aws-debian.pkr.hcl
 
       - name: Run Packer Validate
-        run: packer validate -var "path=$pwd_path" ./packer/aws-debian.pkr.hcl
+        run: packer validate ./packer/aws-debian.pkr.hcl
