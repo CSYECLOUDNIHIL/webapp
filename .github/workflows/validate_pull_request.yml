@@ -1,0 +1,51 @@
+name: Integration Test
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        
+      - name: Install Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          packer_version: '1.8.6'
+      - name: Initialize Packer
+        run: packer init ./packer/
+       
+      - name: Create .env file
+        run: touch .env
+
+      - name: Save .env file
+        run: |
+          echo "DB_DIALECT=${{ secrets.DB_DIALECT }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME_CREATED=${{ secrets.DB_NAME_CREATED }}" >> .env
+          echo "DB_NAME_DEFAULT=${{ secrets.DB_NAME_DEFAULT }}" >> .env
+          echo "DB_LOGGING=${{ secrets.DB_LOGGING }}" >> .env
+          echo "CSV_LOCATION=${{ secrets.CSV_LOCATION }}" >> .env
+          echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+          
+      - name: Zip webapp contents
+        run: |
+          zip -r webapp.zip ./
+      
+      - name: list files
+        run: |
+          ls -a
+          pwd_path=$(pwd)
+      - name: list files
+        run: echo "My variable value is ${{ pwd_path }}"
+      
+      - name: Run Packer Build
+        run: packer fmt ./packer/aws-debian.pkr.hcl
+
+      - name: Run Packer Validate
+        run: packer validate -var "path=$pwd_path" ./packer/aws-debian.pkr.hcl
