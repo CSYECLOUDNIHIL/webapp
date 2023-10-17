@@ -105,7 +105,7 @@ source "amazon-ebs" "debian-aws-ami" {
   }
 
   launch_block_device_mappings {
-    delete_on_termination = true
+    //delete_on_termination = true
     device_name           = "/dev/xvda"
     volume_size           = 8
     volume_type           = "gp2"
