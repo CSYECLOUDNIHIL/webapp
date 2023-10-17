@@ -123,6 +123,6 @@ build {
     destination = "/home/admin/webapp.zip"
   }
   provisioner "shell" {
-    script = "./packer/db.sh"
+    script = "./db.sh"
   }
 }
