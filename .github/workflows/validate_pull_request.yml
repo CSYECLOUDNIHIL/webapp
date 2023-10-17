@@ -65,4 +65,6 @@ jobs:
         run: packer fmt ./packer/aws-debian.pkr.hcl
 
       - name: Run Packer Validate
-        run: packer validate ./packer/aws-debian.pkr.hcl
+        run: |
+          cd packer
+          packer validate ./packer/aws-debian.pkr.hcl
