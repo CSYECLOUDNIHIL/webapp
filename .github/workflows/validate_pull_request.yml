@@ -6,6 +6,23 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_NAME_CREATED }}
+          POSTGRES_PORT: ${{ secrets.DB_PORT }}
+          POSTGRES_HOST: ${{ secrets.DB_HOST }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -42,7 +59,19 @@ jobs:
           ls -a
           current_directory=$(pwd)
           # Echo the value of the variable
-          echo "hello $current_directory"
+          echo "$current_directory"
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: v18.17.1
+      - name: install the dependencies
+        run: npm install
+
+      - name: run the integration
+        run: |
+          source .env 
+          npm test
                 
       - name: Run Packer Build
         run: packer fmt ./packer/aws-debian.pkr.hcl
