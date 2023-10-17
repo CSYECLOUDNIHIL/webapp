@@ -78,7 +78,6 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-<<<<<<< HEAD
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Build packer
         run: |
@@ -90,7 +89,4 @@ jobs:
           -var 'aws_ami_owner_dev=${{secrets.AWS_DEMO_ID}}' \
           -var 'aws_ami_owner_demo=${{secrets.AWS_DEV_ID}}' \
           -var 'aws_ami_region'=${{secrets.AWS_REGION}}' \ 
-          -var "path=$(current_directory)/webapp.zip" backendApp.pkr.hcl
-=======
-          aws-region: ${{ secrets.AWS_REGION }}
->>>>>>> 024c5efb307271654d5dd16e6b1206465f1b33f4
+          -var "path=$(current_directory)/webapp.zip" aws-debian.pkr.hcl
