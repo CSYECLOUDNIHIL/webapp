@@ -79,3 +79,14 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      - name: Build packer
+        run: |
+          cd packer
+          packer init aws-debian.pkr.hcl
+          packer build \
+          -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY}}' \
+          -var 'aws_secret_key=${{secrets.AWS_SECRET_KEY}}' \
+          -var 'aws_ami_owner_dev=${{secrets.AWS_DEMO_ID}}' \
+          -var 'aws_ami_owner_demo=${{secrets.AWS_DEV_ID}}' \
+          -var 'aws_ami_region'=${{secrets.AWS_REGION}}' \ 
+          -var "path=$(current_directory)/webapp.zip" backendApp.pkr.hcl

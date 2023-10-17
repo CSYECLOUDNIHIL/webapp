@@ -10,7 +10,7 @@ packer {
 
 variable "aws_ami_region" {
   type      = string
-  default   = "us-east-1"
+  default   = ""
   sensitive = true
 }
 
@@ -50,13 +50,13 @@ variable "ami_source_name" {
 
 variable "aws_access_key" {
   type      = string
-  default   = "AKIATUZQKGWXPQZSY677"
+  default   = ""
   sensitive = true
 }
 
 variable "aws_secret_key" {
   type      = string
-  default   = "/QUJfiUBCE/5Fu4dXt/DyUsrqF2l+29exzf6Tn4b"
+  default   = ""
   sensitive = true
 }
 
@@ -98,6 +98,7 @@ source "amazon-ebs" "debian-aws-ami" {
   ami_description = "Assignment 5 AMI"
   ssh_username    = "${var.ssh_username}"
   subnet_id       = "${var.subnet_id}"
+  ami_users        = ["${var.aws_ami_owner_dev}","${var.aws_ami_owner_demo}"]
   aws_polling {
     delay_seconds = 120
     max_attempts  = 50
