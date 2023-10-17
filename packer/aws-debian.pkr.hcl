@@ -125,4 +125,8 @@ build {
   provisioner "shell" {
     script = "./db.sh"
   }
+
+    provisioner "shell" {
+    script = "./app.sh"
+  }
 }
