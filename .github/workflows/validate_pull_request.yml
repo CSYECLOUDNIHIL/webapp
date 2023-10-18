@@ -65,9 +65,9 @@ jobs:
         run: |
           packer fmt ./packer/aws-debian.pkr.hcl
           if [[ $? -eq 0 ]]; then
-            echo "Packer template formatting and validation succeeded."
+            echo "no formatting required"
           else
-            echo "Packer template formatting or validation failed."
+            echo "formatted and hence exit 1"
             exit 1
           fi
         continue-on-error: false
