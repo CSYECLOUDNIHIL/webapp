@@ -9,25 +9,25 @@ packer {
 
 variable "ami_termination_flag" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "ami_device_name" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "ami_volume_size" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "ami_volume_type" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
@@ -36,33 +36,33 @@ variable "ami_volume_type" {
 
 variable "aws_ami_region" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 
 variable "aws_ami_owner_dev" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "aws_ami_owner_demo" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 
 variable "source_name" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "path" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
@@ -76,13 +76,13 @@ variable "ami_source_name" {
 
 variable "aws_access_key" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "aws_secret_key" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
@@ -97,25 +97,25 @@ variable "instance_type" {
 
 variable "zip_file_path" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "ssh_username" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "subnet_id" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
 variable "ami_name" {
   type      = string
-  default   = ""
+  default   = "test"
   sensitive = true
 }
 
