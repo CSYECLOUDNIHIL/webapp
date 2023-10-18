@@ -21,13 +21,13 @@ variable "ami_device_name" {
 
 variable "ami_volume_size" {
   type      = string
-  default   = "test"
+  default   = "8"
   sensitive = true
 }
 
 variable "ami_volume_type" {
   type      = string
-  default   = "test"
+  default   = "gp2"
   sensitive = true
 }
 
@@ -62,7 +62,7 @@ variable "source_name" {
 
 variable "path" {
   type      = string
-  default   = "test"
+  default   = ""
   sensitive = true
 }
 
@@ -103,19 +103,19 @@ variable "zip_file_path" {
 
 variable "ssh_username" {
   type      = string
-  default   = "test"
+  default   = "admin"
   sensitive = true
 }
 
 variable "subnet_id" {
   type      = string
-  default   = "test"
+  default   = ""
   sensitive = true
 }
 
 variable "ami_name" {
   type      = string
-  default   = "test"
+  default   = "csye_"
   sensitive = true
 }
 
