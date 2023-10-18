@@ -7,7 +7,17 @@ npm -v
 
 cd /home/admin/
 
-unzip webapp.zip 
+sudo apt-get install -y unzip
+
+
+
+mkdir webapp-main
+
+cd webapp-main
+
+unzip webapp.zip
+
+npm install
 
 ls -a 
 
