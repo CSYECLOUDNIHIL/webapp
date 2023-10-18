@@ -43,7 +43,7 @@ variable "path" {
 
 variable "ami_source_name" {
   type      = string
-  default   = ""
+  default   = "ami-test"
   sensitive = true
 }
 
