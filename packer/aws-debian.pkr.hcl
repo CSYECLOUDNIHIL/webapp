@@ -83,7 +83,7 @@ variable "ssh_username" {
 
 variable "subnet_id" {
   type      = string
-  default   = "subnet-099317c8130cea37f"
+  default   = ""
   sensitive = true
 }
 
