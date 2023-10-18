@@ -17,7 +17,7 @@ variable "aws_ami_region" {
 
 variable "aws_ami_owner_dev" {
   type      = string
-  default   = "250820048302"
+  default   = ""
   sensitive = true
 }
 
@@ -43,7 +43,7 @@ variable "path" {
 
 variable "ami_source_name" {
   type      = string
-  default   = "ami-06db4d78cb1d3bbf9"
+  default   = ""
   sensitive = true
 }
 
@@ -98,7 +98,7 @@ source "amazon-ebs" "debian-aws-ami" {
   ami_description = "Assignment 5 AMI"
   ssh_username    = "${var.ssh_username}"
   subnet_id       = "${var.subnet_id}"
-  ami_users        = ["${var.aws_ami_owner_dev}"]
+  ami_users        = ["${var.aws_ami_owner_dev}","${var.aws_ami_owner_demo}"]
   aws_polling {
     delay_seconds = 120
     max_attempts  = 50
