@@ -7,6 +7,32 @@ packer {
   }
 }
 
+variable "ami_termination_flag" {
+  type      = string
+  default   = ""
+  sensitive = true
+}
+
+variable "ami_device_name" {
+  type      = string
+  default   = ""
+  sensitive = true
+}
+
+variable "ami_volume_size" {
+  type      = string
+  default   = ""
+  sensitive = true
+}
+
+variable "ami_volume_type" {
+  type      = string
+  default   = ""
+  sensitive = true
+}
+
+
+
 
 variable "aws_ami_region" {
   type      = string
@@ -77,7 +103,7 @@ variable "zip_file_path" {
 
 variable "ssh_username" {
   type      = string
-  default   = "admin"
+  default   = ""
   sensitive = true
 }
 
@@ -87,11 +113,18 @@ variable "subnet_id" {
   sensitive = true
 }
 
+variable "ami_name" {
+  type      = string
+  default   = ""
+  sensitive = true
+}
+
+
 
 
 
 source "amazon-ebs" "debian-aws-ami" {
-  ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
+  ami_name        = "${ami_name}${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   source_ami      = "${var.ami_source_name}"
   instance_type   = "${var.instance_type}"
   region          = "${var.aws_ami_region}"
@@ -105,10 +138,10 @@ source "amazon-ebs" "debian-aws-ami" {
   }
 
   launch_block_device_mappings {
-    delete_on_termination = true
-    device_name           = "/dev/xvda"
-    volume_size           = 8
-    volume_type           = "gp2"
+    delete_on_termination = "${var.ami_termination_flag}"
+    device_name           = "${var.ami_device_name}"
+    volume_size           = "${var.ami_volume_size}"
+    volume_type           = "${var.ami_volume_type}"
   }
 }
 
