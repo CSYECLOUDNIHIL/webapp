@@ -160,6 +160,6 @@ build {
   }
 
   provisioner "shell" {
-       script = "./app.sh"
+    script = "./app.sh"
   }
 }
