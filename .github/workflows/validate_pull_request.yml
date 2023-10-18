@@ -62,7 +62,10 @@ jobs:
           npm test
                 
       - name: Run Packer Build
-        run: packer fmt ./packer/aws-debian.pkr.hcl
+        run: |
+          packer fmt ./packer/aws-debian.pkr.hcl
+          git diff --exit-code
+        continue-on-error: false
 
       - name: Run Packer Validate
         run: |
