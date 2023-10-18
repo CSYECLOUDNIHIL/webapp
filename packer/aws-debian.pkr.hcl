@@ -8,8 +8,8 @@ packer {
 }
 
 variable "ami_termination_flag" {
-  type      = string
-  default   = "test"
+  type      = bool
+  default   = "true"
   sensitive = true
 }
 
@@ -20,8 +20,8 @@ variable "ami_device_name" {
 }
 
 variable "ami_volume_size" {
-  type      = string
-  default   = "8"
+  type      = number
+  default   = 8
   sensitive = true
 }
 
@@ -124,7 +124,7 @@ variable "ami_name" {
 
 
 source "amazon-ebs" "debian-aws-ami" {
-  ami_name        = "${ami_name}${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
+  ami_name        = "${var.ami_name}${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   source_ami      = "${var.ami_source_name}"
   instance_type   = "${var.instance_type}"
   region          = "${var.aws_ami_region}"
