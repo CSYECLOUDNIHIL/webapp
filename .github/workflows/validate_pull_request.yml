@@ -62,7 +62,15 @@ jobs:
           npm test
                 
       - name: Run Packer Build
-        run: packer fmt ./packer/aws-debian.pkr.hcl
+        run: |
+          packer fmt -check ./packer/aws-debian.pkr.hcl
+          if [[ $? -eq 0 ]]; then
+            echo "no formatting required"
+          else
+            echo "formatted and hence exit 1"
+            exit 1
+          fi
+        continue-on-error: false
 
       - name: Run Packer Validate
         run: |

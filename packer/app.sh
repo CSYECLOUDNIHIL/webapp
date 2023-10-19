@@ -8,4 +8,5 @@ mv webapp.zip ./webapp-main
 cd webapp-main
 unzip webapp.zip
 npm install
+sudo apt-get remove -y git
 sudo apt-get clean
