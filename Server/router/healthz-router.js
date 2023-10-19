@@ -20,17 +20,5 @@ router.route('/')
     .patch(healthzController.update)
     .delete(healthzController.deleteRecord)
     .get(healthzController.index);
-
-router.route('/v1/assignments')
-    .post(assignmentController.post)
-    .all(queryParameter)
-    .get(assignmentController.index);
-
-router.route('/v1/assignments/:id')
-    .put(assignmentController.update)
-    .all(queryParameter)
-    .patch(assignmentController.updatenotallowed)
-    .delete(assignmentController.deleteRecord)
-    .get(assignmentController.getbyone);
-
+    
 module.exports = router;
