@@ -264,23 +264,37 @@ const update = async (request, response) => {
                 const requestBody = request.body;
 
                 const createAssignment = await checkId(request.params.id, credentials);
-
-                if (createAssignment) {
-                    await createAssignment.set({
-                        name: request.body.name,
-                        points: request.body.points,
-                        num_of_attemps: request.body.num_of_attemps,
-                        deadline: request.body.deadline,
-                        updated_by: credentials.username,
-                        assignment_updated: new Date()
-                    });
-                    const updateData = await createAssignment.save();
-                    await responseHeaders(response);
-                    response.status(204).send();
-                } else {
-                    await responseHeaders(response);
-                    response.status(403).send();
+                const columnInvalidFlag = await checkInvalidColumn(request.body);
+                if(columnInvalidFlag == true) {
+                    
+                    if(request.body.name == "" || request.body.points == "" || request.body.num_of_attemps == "" || request.body.deadline == "")  {
+                        await responseHeaders(response);
+                        response.status(400).send();
+                    }
+                    else {
+                        if (createAssignment) {
+                            await createAssignment.set({
+                                name: request.body.name,
+                                points: request.body.points,
+                                num_of_attemps: request.body.num_of_attemps,
+                                deadline: request.body.deadline,
+                                updated_by: credentials.username,
+                                assignment_updated: new Date()
+                            });
+                            const updateData = await createAssignment.save();
+                            await responseHeaders(response);
+                            response.status(204).send();
+                        } else {
+                            await responseHeaders(response);
+                            response.status(403).send();
+                        }
+                    }
                 }
+                else {
+                    await responseHeaders(response);
+                    response.status(400).send();
+                }
+
             } else {
                 await responseHeaders(response);
                 response.status(401).send();
