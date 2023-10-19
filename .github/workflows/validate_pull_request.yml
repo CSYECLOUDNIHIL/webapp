@@ -63,7 +63,7 @@ jobs:
                 
       - name: Run Packer Build
         run: |
-          packer fmt ./packer/aws-debian.pkr.hcl
+          packer fmt -check ./packer/aws-debian.pkr.hcl
           if [[ $? -eq 0 ]]; then
             echo "no formatting required"
           else
