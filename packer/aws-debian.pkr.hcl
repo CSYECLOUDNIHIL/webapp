@@ -156,10 +156,10 @@ build {
     destination = "/home/admin/webapp.zip"
   }
   provisioner "shell" {
-    script = "./db.sh"
+    script = ""
   }
 
   provisioner "shell" {
-script = "./app.sh"
+    script = "./app.sh"
   }
 }
