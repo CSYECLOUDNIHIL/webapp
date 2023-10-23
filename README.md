@@ -48,4 +48,4 @@ To run the tests, use the following command:
 bash
 Copy code
 npm test
-This will execute any unit or integration tests you have set up for the application.
+This will execute any unit or integration tests you have set up for the application
