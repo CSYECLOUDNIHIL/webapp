@@ -155,8 +155,10 @@ build {
     source      = "${var.path}"
     destination = "/home/admin/webapp.zip"
   }
-  provisioner "shell" {
-    script = "./db.sh"
+
+  provisioner "file" {
+    source      = "./healthz-systemd.service"
+    destination = "/etc/systemd/system/healthz-systemd.service"
   }
 
   provisioner "shell" {

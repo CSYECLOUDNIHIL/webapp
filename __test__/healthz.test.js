@@ -12,6 +12,4 @@ describe('GET /healthz', () => {
     const response = await request(app).get('/healthz');
     expect(response.status).toBe(200);
   });
-
-  // Add more test cases as needed for your API endpoints
 });

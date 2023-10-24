@@ -1,0 +1,15 @@
+[Unit]
+Description=healthz node applicaiton Application
+After=cloud-init.service
+Wants=cloud-init.service
+
+[Service]
+ExecStart=/usr/bin/node /home/admin/webapp-main/server.js
+WorkingDirectory=/home/admin/webapp-main
+Type=simple
+User=admin
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
