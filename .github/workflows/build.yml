@@ -33,10 +33,15 @@ jobs:
           packer_version: '1.8.6'
       - name: Initialize Packer
         run: packer init ./packer/
-       
+          
+      - name: Zip webapp contents
+        run: |
+          zip -r webapp.zip ./
+      
+
       - name: Create .env file
         run: touch .env
-
+  
       - name: Save .env file
         run: |
           echo "DB_DIALECT=${{ secrets.DB_DIALECT }}" >> .env
@@ -49,11 +54,8 @@ jobs:
           echo "DB_LOGGING=${{ secrets.DB_LOGGING }}" >> .env
           echo "CSV_LOCATION=${{ secrets.CSV_LOCATION }}" >> .env
           echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
-          
-      - name: Zip webapp contents
-        run: |
-          zip -r webapp.zip ./
-      
+
+
       - name: list files
         run: |
           ls -a
