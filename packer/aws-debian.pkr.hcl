@@ -156,10 +156,10 @@ build {
     destination = "/home/admin/webapp.zip"
   }
 
-  provisioner "file" {
+/*   provisioner "file" {
     source      = "./healthz-systemd.service"
     destination = "/etc/systemd/system/healthz-systemd.service"
-  }
+  } */
 
   provisioner "shell" {
     script = "./app.sh"

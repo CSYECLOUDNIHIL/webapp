@@ -42,7 +42,7 @@ route(app);
 app.listen(port, () => console.log(`Connected to localhost (127.0.0.1) port ${port} (#0)`));
 try {
     try {
-        await sequelize.sync({ force: true });
+        await sequelize.sync({ alter: true });
         console.log("connection established and the database is present");
     }
     catch (error) {
@@ -53,13 +53,13 @@ try {
             host: process.env.DB_HOST,
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME_DEFAULT,
+            database: process.env.DB_NAME_CREATED,
             port: process.env.DB_NAME_PORT,
             logging: false
         });
         try {
             await createDb.query('CREATE DATABASE healthz');
-            await sequelize.sync({ force: true });
+            await sequelize.sync({ alter: true });
             console.log("connection established and the database is present");
         }
         catch (error) {
