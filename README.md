@@ -10,7 +10,7 @@ Testing
 Contributing
 License
 Prerequisites
-Before you begin, ensure you have met the following requirements:
+Before you begin, ensure you have met the following requirements:    
 
 Node.js: Make sure you have Node.js installed on your machine. You can download it from nodejs.org.
 Installation
