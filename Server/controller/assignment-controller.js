@@ -50,7 +50,7 @@ const connection = async () => {
         await sequelize.authenticate();
         return true;
     } catch (err) {
-        //console.log('hello');
+        ////console.log('hello');
         return false;
     }
 };
@@ -93,10 +93,21 @@ const index = async (request, response) => {
 
             if (passMatch) {
                 const account_data = await assignment.findAll();
-                console.log(account_data);
+                //console.log(account_data);
                 if (account_data) {
                     await responseHeaders(response);
-                    response.status(200).json(account_data);
+                    const responseData = account_data.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        points: item.points,
+                        num_of_attemps: item.num_of_attemps,
+                        deadline: item.deadline,
+                        assignment_created: item.assignment_created,
+                        assignment_updated: item.assignment_updated,
+                        created_by: item.created_by,
+                        updated_by: item.updated_by,
+                      }));
+                    response.status(200).json(responseData);
                 }
                 else {
                     await responseHeaders(response);
@@ -123,7 +134,7 @@ const getbyone = async (request, response) => {
             response.status(400).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (await connection()) {
             const credentials = await authenticateUser(request);
-            const passMatch = await decryptrion(credentials);request.params.id
+            const passMatch = await decryptrion(credentials);
             if (passMatch) {
                 await responseHeaders(response);
                 const requestBody = request.body;
@@ -132,12 +143,24 @@ const getbyone = async (request, response) => {
                         id: request.params.id
                     }
                 })
+                //console.log(createAssignment);
                 if (createAssignment) {
                     await responseHeaders(response);
-                    response.status(200).json(createAssignment);
+                    const responseData = {
+                        id: createAssignment.id,
+                        name: createAssignment.name,
+                        points: createAssignment.points,
+                        num_of_attemps: createAssignment.num_of_attemps,
+                        deadline: createAssignment.deadline,
+                        assignment_created: createAssignment.assignment_created,
+                        assignment_updated: createAssignment.assignment_updated,
+                        created_by: createAssignment.created_by,
+                        updated_by: createAssignment.updated_by,
+                      };
+                    response.status(200).json(responseData);
                 } else {
                     await responseHeaders(response);
-                    response.status(403).send();
+                    response.status(404).send();
                 }
             } else {
                 await responseHeaders(response);
@@ -176,7 +199,7 @@ const post = async (request, response) => {
                 const requestBody = request.body;
 
                 const columnInvalidFlag = await checkInvalidColumn(request.body);
-                console.log(columnInvalidFlag);
+                //console.log(columnInvalidFlag);
                 if(columnInvalidFlag == true) {
                     
                     if(request.body.name == "" || request.body.points == "" || request.body.num_of_attemps == "" || request.body.deadline == "")  {
@@ -195,10 +218,13 @@ const post = async (request, response) => {
                             assignment_created: new Date(),
                         });
                         const responseData = {
+                            id: createAssignment.id,
                             name: createAssignment.name,
                             points: createAssignment.points,
                             num_of_attemps: createAssignment.num_of_attemps,
                             deadline: createAssignment.deadline,
+                            assignment_created: createAssignment.assignment_created,
+                            assignment_updated: createAssignment.assignment_updated,
                           };
                         setSuccessfulResponse(responseData, response);
                     }
@@ -324,16 +350,28 @@ const deleteRecord = async (request, response) => {
             const passMatch = await decryptrion(credentials);
             if (passMatch) {
                 await responseHeaders(response);
-                const createAssignment = await checkId(request.params.id, credentials);
-
-                if (createAssignment) {
-                    await createAssignment.destroy();
-                    await responseHeaders(response);
-                    response.status(204).send();
+                const checkAssignment = await assignment.findOne({
+                    where: {
+                        id: request.params.id,
+                    }
+                });
+                if (checkAssignment) {
+                    const createAssignment = await checkId(request.params.id, credentials);
+                    if (createAssignment) {
+                        await createAssignment.destroy();
+                        await responseHeaders(response);
+                        response.status(204).send();
+                    } else {
+                        await responseHeaders(response);
+                        response.status(403).send();
+                    }
                 } else {
                     await responseHeaders(response);
-                    response.status(403).send();
+                    response.status(404).send();
                 }
+                
+                
+
             } else {
                 await responseHeaders(response);
                 response.status(401).send();
