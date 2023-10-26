@@ -1,15 +1,15 @@
 [Unit]
 Description=healthz node applicaiton Application
-After=cloud-init.service
-Wants=cloud-init.service
+After=cloud-init.target
 
 [Service]
 Type=simple
 User=csye6225
+Group=csye6225
 ExecStart=/usr/bin/node /opt/csye6225/server.js
 WorkingDirectory=/opt/csye6225/
-Restart=on-failure
-RestartSec=5s
+Restart=always
+RestartSec=3
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=cloud-init.target
