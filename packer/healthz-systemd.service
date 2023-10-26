@@ -1,6 +1,6 @@
 [Unit]
 Description=healthz node applicaiton Application
-After=cloud-init.target
+After=network.target
 
 [Service]
 Type=simple
