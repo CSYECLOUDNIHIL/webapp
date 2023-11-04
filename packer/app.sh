@@ -8,6 +8,12 @@ sudo mv /home/admin/webapp.zip /opt/csye6225/webapp.zip
 cd /opt/csye6225/
 sudo unzip webapp.zip
 sudo cp /opt/csye6225/packer/healthz-systemd.service /lib/systemd/system/healthz-systemd.service
+sudo cp /opt/csye6225/packer/cloudwatch-config.json /opt/cloudwatch-config.json
 sudo npm install
+sudo chown -R csye6225:csye6225 /opt/csye6225
+sudo chmod -R 750 /opt/csye6225
+sudo systemctl daemon-reload
+sudo systemctl enable healthz-systemd
+sudo systemctl start healthz-systemd
 sudo apt-get remove -y git
 sudo apt-get clean
