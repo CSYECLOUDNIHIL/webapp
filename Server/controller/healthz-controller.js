@@ -1,6 +1,6 @@
 const sequelize = require('../../config/dbconfig.js');
 const account = require('../schema/account-schema.js');
-const logger = require('../../config/logger.js');
+
 async function currentDate() {
     const currentDate = new Date();
     const date = currentDate.toUTCString();
@@ -43,7 +43,7 @@ const index = async (request, response) => {
             response.setHeader('Date', await currentDate());
             response.setHeader('Content-Length', 0);
 
-            logger.info('This is an informational log message.');
+            
 
             response.status(200).send(); //json({ message: '200 ok' });
             
