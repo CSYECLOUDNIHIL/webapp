@@ -109,6 +109,7 @@ const index = async (request, response) => {
                         updated_by: item.updated_by,
                       }));
                     response.status(200).json(responseData);
+                    console.log("logger info to be called.......")
                     logger.info('This is an informational log message.');
                 }
                 else {
