@@ -63,7 +63,7 @@ try {
             console.log("connection established and the database is present");
         }
         catch (error) {
-            console.log("the db server is down");
+             console.log("the db server is down");
         }
     }
 

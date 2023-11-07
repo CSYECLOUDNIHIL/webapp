@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 const { Sequelize, Op } = require('sequelize');
 const { responseHeaders } = require('../response/response-methods.js');
 const logger = require('../../config/logger.js');
+const statsd = require('../../config/statsd-config.js');
+
 
 const  checkInvalidColumn = async (invalid) => {
     const allowedColumns = ['name', 'points', 'num_of_attemps', 'deadline'];
@@ -110,6 +112,7 @@ const index = async (request, response) => {
                       }));
                     response.status(200).json(responseData);
                     logger.info('Get hit for /v1/assignments/');
+                    statsd.increment('api.get.assignments');
                 }
                 else {
                     await responseHeaders(response);
