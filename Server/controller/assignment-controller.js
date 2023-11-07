@@ -109,8 +109,7 @@ const index = async (request, response) => {
                         updated_by: item.updated_by,
                       }));
                     response.status(200).json(responseData);
-                    console.log("logger info to be called.......")
-                    logger.info('This is an informational log message.');
+                    logger.info('Get hit for /v1/assignments/');
                 }
                 else {
                     await responseHeaders(response);
@@ -161,6 +160,7 @@ const getbyone = async (request, response) => {
                         updated_by: createAssignment.updated_by,
                       };
                     response.status(200).json(responseData);
+                    logger.info('Get one assignment hit api for /v1/assignments/');
                 } else {
                     await responseHeaders(response);
                     response.status(404).send();
@@ -230,6 +230,7 @@ const post = async (request, response) => {
                             assignment_updated: createAssignment.assignment_updated,
                           };
                         setSuccessfulResponse(responseData, response);
+                        logger.info('Post hit api for /v1/assignments/');
                     }
                     
 
@@ -313,6 +314,7 @@ const update = async (request, response) => {
                             const updateData = await createAssignment.save();
                             await responseHeaders(response);
                             response.status(204).send();
+                            logger.info('Update hit api for /v1/assignments/');
                         } else {
                             await responseHeaders(response);
                             response.status(403).send();
@@ -364,6 +366,7 @@ const deleteRecord = async (request, response) => {
                         await createAssignment.destroy();
                         await responseHeaders(response);
                         response.status(204).send();
+                        logger.info('Delete hit api for /v1/assignments/');
                     } else {
                         await responseHeaders(response);
                         response.status(403).send();
