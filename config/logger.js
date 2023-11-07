@@ -6,7 +6,7 @@ const logger = createLogger({
   level: 'info',
   format: format.combine(format.timestamp(), format.json()),
   defaultMeta: { service: 'csye6225' },
-  transports: [new transports.File({ filename: '/var/logs/csye6225.log' })],
+  transports: [new transports.File({ filename: '/logs/csye6225.log' })],
 });
 
 module.exports = logger;
