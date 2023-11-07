@@ -55,8 +55,6 @@ jobs:
           node-version: v18.17.1
       - name: install the dependencies
         run: npm install
-      - name: creating a folder
-        run: sudo mkdir /var/logs/
 
       - name: run the integration
         run: |
