@@ -25,7 +25,8 @@
     "supertest": "^6.3.3"
   },
   "scripts": {
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles --forceExit"
+
   },
   "jest": {
     "transform": {

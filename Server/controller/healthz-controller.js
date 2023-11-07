@@ -1,5 +1,6 @@
 const sequelize = require('../../config/dbconfig.js');
 const account = require('../schema/account-schema.js');
+const logger = require('../../config/logger.js');
 
 async function currentDate() {
     const currentDate = new Date();
@@ -42,7 +43,7 @@ const index = async (request, response) => {
             response.removeHeader('keep-alive');
             response.setHeader('Date', await currentDate());
             response.setHeader('Content-Length', 0);
-
+            logger.info('Get api hit  for /healthz/');
             
 
             response.status(200).send(); //json({ message: '200 ok' });
