@@ -7,7 +7,6 @@ const { responseHeaders } = require('../response/response-methods.js');
 const logger = require('../../config/logger.js');
 const statsd = require('../../config/statsd-config.js');
 
-
 const  checkInvalidColumn = async (invalid) => {
     const allowedColumns = ['name', 'points', 'num_of_attemps', 'deadline'];
     const requestData = invalid;
@@ -86,6 +85,7 @@ const setSuccessfulResponse = async (obj, response) => {
 };
 
 const index = async (request, response) => {
+    statsd.increment('api.getall.assignments');
     try {
         if (request.get('Content-Length') > 0) {
             await responseHeaders(response);
@@ -112,7 +112,7 @@ const index = async (request, response) => {
                       }));
                     response.status(200).json(responseData);
                     logger.info('Get hit for /v1/assignments/');
-                    statsd.increment('api.get.assignments');
+                    
                 }
                 else {
                     await responseHeaders(response);
@@ -133,6 +133,7 @@ const index = async (request, response) => {
 };
 
 const getbyone = async (request, response) => {
+    statsd.increment('api.getone.assignments');
     try {
         if (request.get('Content-Length') > 0) {
             await responseHeaders(response);
@@ -188,7 +189,7 @@ const getbyone = async (request, response) => {
 };
 
 const post = async (request, response) => {
-
+    statsd.increment('api.create.assignments');
     const columnInvalidFlag = await checkInvalidColumn(request.body);
     try {
         if (request.get('Content-Length') == 0) {
@@ -266,6 +267,7 @@ const post = async (request, response) => {
 
 
 const updatenotallowed = async (request, response) => {
+    statsd.increment('api.patch.assignments');
     try {
             await responseHeaders(response);
             response.status(405).send();
@@ -282,6 +284,7 @@ const updatenotallowed = async (request, response) => {
 
 
 const update = async (request, response) => {
+    statsd.increment('api.update.assignments');
     try {
         if (request.get('Content-Length') == 0) {
             await responseHeaders(response);
@@ -349,6 +352,7 @@ const update = async (request, response) => {
 };
 
 const deleteRecord = async (request, response) => {
+    statsd.increment('api.delete.assignments');
     try {
         if (request.get('Content-Length') > 0) {
             await responseHeaders(response);

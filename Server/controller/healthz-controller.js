@@ -1,7 +1,7 @@
 const sequelize = require('../../config/dbconfig.js');
 const account = require('../schema/account-schema.js');
 const logger = require('../../config/logger.js');
-
+const statsd = require('../../config/statsd-config.js');
 async function currentDate() {
     const currentDate = new Date();
     const date = currentDate.toUTCString();
@@ -22,6 +22,7 @@ async function connection() {
 }
 
 const index = async (request, response) => {
+    statsd.increment('api.getall.healthz');
     try {
         console.log(request.query);
         if (request.get('Content-Length') > 0 && JSON.stringify(request.body)) {
@@ -64,6 +65,7 @@ const index = async (request, response) => {
 };
 
 const post = async (request, response) => {
+    statsd.increment('api.create.healthz');
     try {
         if (request.get('Content-Length') > 0) {
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
@@ -120,6 +122,7 @@ const post = async (request, response) => {
 };
 
 const update = async (request, response) => {
+    statsd.increment('api.update.healthz');
     try {
         console.log(JSON.stringify(request.body) === '{}');
         if (request.get('Content-Length') > 0) {
@@ -177,6 +180,7 @@ const update = async (request, response) => {
 };
 
 const deleteRecord = async (request, response) => {
+    statsd.increment('api.delete.healthz');
     try {
         if (request.get('Content-Length') > 0) {
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
