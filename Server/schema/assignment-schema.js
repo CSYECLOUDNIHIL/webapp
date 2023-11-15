@@ -12,12 +12,14 @@ const assignment = sequelize.define('assignment', {
     type: DataTypes.STRING,
     primaryKey: false,
     allowNull: false,
+    unique:'compositeIndex'
   },
   points: {
     type: DataTypes.INTEGER,
     primaryKey: false,
     allowNull: false,
     validate: {
+      isInt: true,
       min: 1,
       max: 10,
     },
@@ -27,6 +29,7 @@ const assignment = sequelize.define('assignment', {
     primaryKey: false,
     allowNull: false,
     validate: {
+      isInt: true,
       min: 0,
       max: 3,
     },
@@ -53,6 +56,7 @@ const assignment = sequelize.define('assignment', {
     primaryKey: false,
     allowNull: false,
     readonly: true,
+    unique:'compositeIndex'
   },
   updated_by: {
     type: DataTypes.STRING,
