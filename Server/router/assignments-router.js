@@ -22,18 +22,26 @@ const credentialsnoAuth = async  (request,response,next) => {
     }
 }
 
+
+const idCheck = async  (request,response,next) => {
+  const id = request.params.id;
+  if (id != id.trim()) {
+      await responseHeaders(response);
+      response.status(400).send();
+    } else {
+      next();
+    }
+}
+
+
 router.route('/assignments')
-    .post(assignmentController.post)
-    .all(queryParameter)
-    .all(credentialsnoAuth)
-    .get(assignmentController.index);
+    .post(queryParameter,credentialsnoAuth,assignmentController.post)
+    .get(queryParameter,credentialsnoAuth,assignmentController.index);
 
 router.route('/assignments/:id')
-    .put(assignmentController.update)
-    .all(queryParameter)
-    .all(credentialsnoAuth)
-    .patch(assignmentController.updatenotallowed)
-    .delete(assignmentController.deleteRecord)
-    .get(assignmentController.getbyone);
+    .put(queryParameter,credentialsnoAuth,idCheck,assignmentController.update)
+    .patch(queryParameter,credentialsnoAuth,idCheck,assignmentController.updatenotallowed)
+    .delete(queryParameter,credentialsnoAuth,idCheck,assignmentController.deleteRecord)
+    .get(queryParameter,credentialsnoAuth,idCheck,assignmentController.getbyone);
 
 module.exports = router;
