@@ -88,6 +88,7 @@ const index = async (request, response) => {
     statsd.increment('api.getall.assignments');
     try {
         if (request.get('Content-Length') > 0) {
+            logger.error("Get hit for /v1/assignments/ Bad Request");
             await responseHeaders(response);
             response.status(400).send(); //json({ message: 'Body not allowed' });
         } else if (await connection()) {
@@ -115,18 +116,22 @@ const index = async (request, response) => {
                     
                 }
                 else {
+                    logger.error("Get hit for /v1/assignments/ Not found");
                     await responseHeaders(response);
                     response.status(404).send();
                 }
             } else {
+                logger.error("Get hit for /v1/assignments/ Not authorised");
                 await responseHeaders(response);
                 response.status(401).send();
             }
         } else {
+            logger.error("Get hit for /v1/assignments/ internal Server Error");
             await responseHeaders(response);
             response.status(503).send(); //json({ message: 'Internal Server Error' });
         }
     } catch (error) {
+        logger.error("Get hit for /v1/assignments/ internal Server Error");
         await responseHeaders(response);
         response.status(503).send(); //json({ message: 'Internal Server Error' });
     }
@@ -136,6 +141,7 @@ const getbyone = async (request, response) => {
     statsd.increment('api.getone.assignments');
     try {
         if (request.get('Content-Length') > 0) {
+            logger.error("Get one assignment hit api for /v1/assignments/ Bad Request");
             await responseHeaders(response);
             response.status(400).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (await connection()) {
@@ -166,23 +172,28 @@ const getbyone = async (request, response) => {
                     response.status(200).json(responseData);
                     logger.info('Get one assignment hit api for /v1/assignments/');
                 } else {
+                    logger.error("Get one assignment hit api for /v1/assignments/ Not Found");
                     await responseHeaders(response);
                     response.status(404).send();
                 }
             } else {
+                logger.error("Get one assignment hit api for /v1/assignments/ Not Authorized");
                 await responseHeaders(response);
                 response.status(401).send(); //json({ message: 'Body not allowed' });
             }
         } else {
+            logger.error("Get one assignment hit api for /v1/assignments/ server error");
             await responseHeaders(response);
             response.status(503).send(); //json({ message: 'Body not allowed' });
         }
     } catch (error) {
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
             await responseHeaders(response);
+            logger.error("Get one assignment hit api for /v1/assignments/ bad requesst");
             response.status(400).send();
         } else {
             await responseHeaders(response);
+            logger.error("Get one assignment hit api for /v1/assignments/ server error");
             response.status(503).send(); //json({ message: 'Internal Server Error' });
         }
     }
@@ -193,9 +204,11 @@ const post = async (request, response) => {
     const columnInvalidFlag = await checkInvalidColumn(request.body);
     try {
         if (request.get('Content-Length') == 0) {
+            logger.error("Post hit api for /v1/assignments/ bad request");
             await responseHeaders(response);
             response.status(400).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (JSON.stringify(request.body) === '{}') {
+            logger.error("Post hit api for /v1/assignments/ bad request");
             await responseHeaders(response);
             response.status(400).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (await connection()) {
@@ -210,6 +223,7 @@ const post = async (request, response) => {
                 if(columnInvalidFlag == true) {
                     
                     if(request.body.name == "" || request.body.points == "" || request.body.num_of_attemps == "" || request.body.deadline == "")  {
+                        logger.error("Post hit api for /v1/assignments/ bad request");
                         await responseHeaders(response);
                         response.status(400).send();
                     }
@@ -241,24 +255,29 @@ const post = async (request, response) => {
                 }
                 else {
                     await responseHeaders(response);
+                    logger.error("Post hit api for /v1/assignments/ bad request");
                     response.status(400).send();
                 }
                 
                 
             } else {
                 await responseHeaders(response);
+                logger.error("Post hit api for /v1/assignments/ not authroized");
                 response.status(401).send();
             }
         } else {
             await responseHeaders(response);
+            logger.error("Post hit api for /v1/assignments/ internal server error");
             response.status(503).send();
         }
     } catch (error) {
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+            logger.error("Post hit api for /v1/assignments/ bad request");
             await responseHeaders(response);
             response.status(400).send();
         } else {
             await responseHeaders(response);
+            logger.error("Post hit api for /v1/assignments/ internal server eerror");
             response.status(503).send();
         }
     }
@@ -269,13 +288,16 @@ const post = async (request, response) => {
 const updatenotallowed = async (request, response) => {
     statsd.increment('api.patch.assignments');
     try {
+        logger.error("Patch hit api for /v1/assignments/ method not allowed");
             await responseHeaders(response);
             response.status(405).send();
     } catch (error) {
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+            logger.error("Patch hit api for /v1/assignments/ bad request");
             await responseHeaders(response);
             response.status(400).send();
         } else {
+            logger.error("Patch hit api for /v1/assignments/ internal server error");
             await responseHeaders(response);
             response.status(503).send();
         }
@@ -287,10 +309,12 @@ const update = async (request, response) => {
     statsd.increment('api.update.assignments');
     try {
         if (request.get('Content-Length') == 0) {
+            logger.error("Update hit api for /v1/assignments bad request");
             await responseHeaders(response);
             response.status(400).send();
         } else if (JSON.stringify(request.body) === '{}') {
             await responseHeaders(response);
+            logger.error("Update hit api for /v1/assignments bad request");
             response.status(400).send();
         } else if (await connection()) {
             const credentials = await authenticateUser(request);
@@ -304,6 +328,7 @@ const update = async (request, response) => {
                 if(columnInvalidFlag == true) {
                     
                     if(request.body.name == "" || request.body.points == "" || request.body.num_of_attemps == "" || request.body.deadline == "")  {
+                        logger.error("Update hit api for /v1/assignments bad request");
                         await responseHeaders(response);
                         response.status(400).send();
                     }
@@ -323,28 +348,34 @@ const update = async (request, response) => {
                             logger.info('Update hit api for /v1/assignments/');
                         } else {
                             await responseHeaders(response);
+                            logger.error("Update hit api for /v1/assignments forbidden");
                             response.status(403).send();
                         }
                     }
                 }
                 else {
+                    logger.error("Update hit api for /v1/assignments bad request");
                     await responseHeaders(response);
                     response.status(400).send();
                 }
 
             } else {
+                logger.error("Update hit api for /v1/assignments not authorised");
                 await responseHeaders(response);
                 response.status(401).send();
             }
         } else {
+            logger.error("Update hit api for /v1/assignments internal server error");
             await responseHeaders(response);
             response.status(503).send();
         }
     } catch (error) {
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+            logger.error("Update hit api for /v1/assignments bad request");
             await responseHeaders(response);
             response.status(400).send();
         } else {
+            logger.error("Update hit api for /v1/assignments internal server error");
             await responseHeaders(response);
             response.status(503).send();
         }
@@ -355,6 +386,7 @@ const deleteRecord = async (request, response) => {
     statsd.increment('api.delete.assignments');
     try {
         if (request.get('Content-Length') > 0) {
+            logger.error("Delete hit api for /v1/assignments/ bad request");
             await responseHeaders(response);
             response.status(400).send();
         } else if (await connection()) {
@@ -375,10 +407,13 @@ const deleteRecord = async (request, response) => {
                         response.status(204).send();
                         logger.info('Delete hit api for /v1/assignments/');
                     } else {
+                        logger.error("Delete hit api for /v1/assignments/ forbidden");
                         await responseHeaders(response);
+                        
                         response.status(403).send();
                     }
                 } else {
+                    logger.error("Delete hit api for /v1/assignments/ Not found");
                     await responseHeaders(response);
                     response.status(404).send();
                 }
@@ -386,14 +421,17 @@ const deleteRecord = async (request, response) => {
                 
 
             } else {
+                logger.error("Delete hit api for /v1/assignments/ Not authorised");
                 await responseHeaders(response);
                 response.status(401).send();
             }
         } else {
+            logger.error("Delete hit api for /v1/assignments/ internal server error");
             await responseHeaders(response);
             response.status(503).send();
         }
     } catch (error) {
+        logger.error("Delete hit api for /v1/assignments/ internal server error");
         await responseHeaders(response);
         response.status(503).send();
     }

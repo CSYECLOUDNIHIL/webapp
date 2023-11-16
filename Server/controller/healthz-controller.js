@@ -26,6 +26,7 @@ const index = async (request, response) => {
     try {
         console.log(request.query);
         if (request.get('Content-Length') > 0 && JSON.stringify(request.body)) {
+            logger.error("Get api hit  for /healthz/ bad request");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -51,7 +52,7 @@ const index = async (request, response) => {
             
         }
     } catch (error) {
-        console.log(error)
+        logger.error("Get api hit  for /healthz/ internal server error");
         response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
         response.set('Pragma', 'no-cache');
         response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -68,6 +69,7 @@ const post = async (request, response) => {
     statsd.increment('api.create.healthz');
     try {
         if (request.get('Content-Length') > 0) {
+            logger.error("Create api hit  for /healthz/ bad request");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -78,6 +80,7 @@ const post = async (request, response) => {
             response.setHeader('Content-Length', 0);
             response.status(400).send(); //json({ message: 'Body not allowed' });
         } else if (request.get('Content-Length') == 0) {
+            logger.error("Create api hit  for /healthz/ method not allowed");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -88,6 +91,7 @@ const post = async (request, response) => {
             response.setHeader('Content-Length', 0);
             response.status(405).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (JSON.stringify(request.body) === '{}') {
+            logger.error("Create api hit  for /healthz/ method not allowed");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -98,6 +102,7 @@ const post = async (request, response) => {
             response.setHeader('Content-Length', 0);
             response.status(405).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (await connection()) {
+            logger.error("Create api hit  for /healthz/ bad request");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -109,6 +114,7 @@ const post = async (request, response) => {
             response.status(400).send(); //json({ message: 'Body not allowed' });
         }
     } catch (error) {
+        logger.error("Create api hit  for /healthz/ internal server error");
         response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
         response.set('Pragma', 'no-cache');
         response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -126,6 +132,7 @@ const update = async (request, response) => {
     try {
         console.log(JSON.stringify(request.body) === '{}');
         if (request.get('Content-Length') > 0) {
+            logger.error("Update api hit  for /healthz/ bad request");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -136,6 +143,7 @@ const update = async (request, response) => {
             response.setHeader('Content-Length', 0);
             response.status(400).send(); //json({ message: 'Body not allowed' });
         } else if (request.get('Content-Length') == 0) {
+            logger.error("Update api hit  for /healthz/ method not allowed" );
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -146,6 +154,7 @@ const update = async (request, response) => {
             response.setHeader('Content-Length', 0);
             response.status(405).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (JSON.stringify(request.body) === '{}') {
+            logger.error("Update api hit  for /healthz/ method not allowed");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -156,6 +165,7 @@ const update = async (request, response) => {
             response.setHeader('Content-Length', 0);
             response.status(405).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (await connection()) {
+            logger.error("Update api hit  for /healthz/ bad request");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -167,6 +177,7 @@ const update = async (request, response) => {
             response.status(400).send(); //json({ message: 'Body not allowed' });
         }
     } catch (error) {
+        logger.error("Update api hit  for /healthz/ internal server error");
         response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
         response.set('Pragma', 'no-cache');
         response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -183,6 +194,7 @@ const deleteRecord = async (request, response) => {
     statsd.increment('api.delete.healthz');
     try {
         if (request.get('Content-Length') > 0) {
+            logger.error("Delete api hit  for /healthz/ bad request");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -193,6 +205,7 @@ const deleteRecord = async (request, response) => {
             response.setHeader('Content-Length', 0);
             response.status(400).send(); //json({ message: 'Body not allowed' });
         } else if (request.get('Content-Length') == null) {
+            logger.error("Delete api hit  for /healthz/ not allowed");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -203,6 +216,7 @@ const deleteRecord = async (request, response) => {
             response.setHeader('Content-Length', 0);
             response.status(405).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
         } else if (await connection()) {
+            logger.error("Delete api hit  for /healthz/ method not allowed");
             response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
             response.set('Pragma', 'no-cache');
             response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -214,6 +228,7 @@ const deleteRecord = async (request, response) => {
             response.status(400).send(); //json({ message: 'Body not allowed' });
         }
     } catch (error) {
+        logger.error("Delete api hit  for /healthz/ internal server error");
         response.set('Cache-Control', 'no-cache,no-store,must-revalidate');
         response.set('Pragma', 'no-cache');
         response.setHeader('X-Content-Type-Options', 'nosniff');
