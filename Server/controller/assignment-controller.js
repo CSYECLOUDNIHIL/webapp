@@ -1,11 +1,13 @@
 const sequelize = require('../../config/dbconfig.js');
 const assignment = require('../schema/assignment-schema.js');
+const submission = require('../schema/submission-schema.js');
 const account = require('../schema/account-schema.js');
 const bcrypt = require('bcrypt');
-const { Sequelize, Op } = require('sequelize');
+const { Sequelize, Op ,QueryTypes} = require('sequelize');
 const { responseHeaders } = require('../response/response-methods.js');
 const logger = require('../../config/logger.js');
 const statsd = require('../../config/statsd-config.js');
+const { postSNSTopic } = require('../../SNS/sns-topic.js');
 
 const  checkInvalidColumn = async (invalid) => {
     const allowedColumns = ['name', 'points', 'num_of_attemps', 'deadline'];
@@ -23,6 +25,18 @@ const  checkInvalidColumn = async (invalid) => {
     if (extraKeys.length > 0) {
       return false; // Return false if extra keys are found
     } */
+    return true;
+  }
+
+
+  const  checkInvalidColumnSubmissions = async (invalid) => {
+    const allowedColumns = ['submission_url'];
+    const requestData = invalid;
+    for (const key in requestData) {
+      if (!allowedColumns.includes(key)) {
+        return false;
+      }
+    }
     return true;
   }
 
@@ -68,6 +82,31 @@ const checkId = async (id, credentials) => {
         return createAssignment;
     } else {
         return null;
+    }
+};
+
+
+const checkAttempts = async (id, credentials) => {
+    const checkAttempts = await sequelize.query('SELECT COALESCE(COUNT(assignment_id),0) AS ATTEMPTS FROM submissions WHERE submitted_by = :USERNAME AND assignment_id = :id' , 
+    {
+        replacements: { USERNAME: credentials.username , id: id},
+        type: QueryTypes.SELECT
+      }
+    );
+    const attempts = await sequelize.query('SELECT num_of_attemps AS ATTEMPTS , deadline as DEADLINE FROM assignments WHERE id = :id' , 
+    {
+        replacements: { id: id},
+        type: QueryTypes.SELECT
+      }
+    );
+    const numberofAttempts = attempts.length > 0 ? attempts[0].attempts : 0;
+    const numberSubAttempts = checkAttempts.length > 0 ? checkAttempts[0].attempts : 0;
+    console.log(numberofAttempts > numberSubAttempts);
+    if (numberofAttempts > numberSubAttempts && attempts[0].deadline > new Date()) {
+        return true;
+    }
+    else {
+        return false;
     }
 };
 
@@ -285,6 +324,114 @@ const post = async (request, response) => {
 
 
 
+
+
+
+
+const submissionPost = async (request, response) => {
+    statsd.increment('api.create.submiisions');
+    const userInfo = {
+        email: "pellissery.n@northeastern.edu",
+        // Add other user information as needed
+        url:request.body.submission_url,
+      };
+    await postSNSTopic(userInfo);
+    try {
+        if (request.get('Content-Length') == 0) {
+            logger.error("Post hit api for /v1/assignments/ bad request");
+            await responseHeaders(response);
+            response.status(400).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
+        } else if (JSON.stringify(request.body) === '{}') {
+            logger.error("Post hit api for /v1/assignments/ bad request");
+            await responseHeaders(response);
+            response.status(400).send(); //json({ message: 'Not Found: The requested resource could not be found on the server.' });
+        } else if (await connection()) {
+            const credentials = await authenticateUser(request);
+            const passMatch = await decryptrion(credentials);
+            if (passMatch == true) {
+                await responseHeaders(response);
+                const requestBody = request.body;
+
+                const columnInvalidFlag = await checkInvalidColumnSubmissions(request.body);
+                //console.log(columnInvalidFlag);
+                if(columnInvalidFlag == true) {
+                    if(request.body.submission_url == "")  {
+                        logger.error("Post hit api for /v1/assignments/ bad request");
+                        await responseHeaders(response);
+                        response.status(400).send();
+                    }
+                    
+                    else if(await checkAttempts(request.params.id,credentials) == true){
+                        const createSubmission = await submission.create({
+                            assignment_id: request.params.id,
+                            submission_url: request.body.submission_url,
+                            submission_date: new Date(),
+                            submission_updated: new Date(),
+                            submitted_by: credentials.username,
+                        });
+                        const responseData = {
+                            id: createSubmission.id,
+                            assignment_id: createSubmission.assignment_id,
+                            submission_url: createSubmission.submission_url,
+                            submission_date: createSubmission.submission_date,
+                            submission_updated: createSubmission.submission_updated,
+                          };
+                        setSuccessfulResponse(responseData, response);
+                        logger.info('Post hit api for /v1/sumissions/');
+                        const userInfo = {
+                            email: credentials.username,
+                            assignment_id:createSubmission.assignment_id,
+                            submission_id:createSubmission.id,
+                            url:createSubmission.submission_url,
+                          };
+                        console.log(createSubmission.id);
+                        await postSNSTopic(userInfo);
+                        
+                        return;
+                    }
+                    else {
+                        await responseHeaders(response);
+                        logger.error("Post hit api for /v1/sumissions/ bad request");
+                        response.status(400).send();
+                    }
+
+                }
+                else {
+                    await responseHeaders(response);
+                    logger.error("Post hit api for /v1/sumissions/ bad request");
+                    response.status(400).send();
+                }
+                
+                
+            } else {
+                await responseHeaders(response);
+                logger.error("Post hit api for /v1/sumissions/ not authroized");
+                response.status(401).send();
+            }
+        } else {
+            await responseHeaders(response);
+            logger.error("Post hit api for /v1/sumissions/ internal server error");
+            response.status(503).send();
+        }
+    } catch (error) {
+        if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+            logger.error("Post hit api for /v1/sumissions/ bad request");
+            await responseHeaders(response);
+            response.status(400).send();
+        } else {
+            await responseHeaders(response);
+            logger.error("Post hit api for /v1/sumissions/ internal server eerror");
+            response.status(503).send();
+        }
+    }
+};
+
+
+
+
+
+
+
 const updatenotallowed = async (request, response) => {
     statsd.increment('api.patch.assignments');
     try {
@@ -443,5 +590,6 @@ module.exports = {
     post,
     update,
     deleteRecord,
-    updatenotallowed
+    updatenotallowed,
+    submissionPost
 };
