@@ -27,7 +27,7 @@ const postSNSTopic = async (userInfo) => {
         TopicArn: process.env.AWS_SNS_TOPIC
     };
 
-    snsTopic.publish(params, (err, data) => {
+    snsTopic.publish(SNSMessageParams, (err, data) => {
           if (err) {
               console.error(err, err.stack);
               reject(err);
