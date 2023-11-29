@@ -21,6 +21,8 @@ const postSNSTopic = async (userInfo) => {
             email: userInfo.email,
             assignmentId:userInfo.assignment_id,
             submissionUrl: userInfo.url,
+            reminingAttempts:userInfo.reminingAttempts,
+            availableAttempts: userInfo.availableAttempts
         }),
         TopicArn: process.env.AWS_SNS_TOPIC
     };
