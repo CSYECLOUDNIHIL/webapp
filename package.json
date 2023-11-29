@@ -19,6 +19,7 @@
     "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6",
     "statsd": "^0.9.0",
+    "url": "^0.11.3",
     "valid-url": "^1.0.9",
     "winston": "^3.11.0",
     "winston-cloudwatch": "^6.2.0"

@@ -17,10 +17,6 @@ const submission = sequelize.define('submission', {
     type: DataTypes.STRING,
     primaryKey: false,
     allowNull: false,
-    isUrl: {
-      args: [['http', 'https']],
-      msg: 'Invalid HTTP or HTTPS URL format',
-    },
   },
   submission_date: {
     type: DataTypes.DATE,
