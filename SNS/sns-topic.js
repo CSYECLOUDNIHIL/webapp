@@ -10,17 +10,15 @@ AWS.config.update({
 // Create publish parameters
 const postSNSTopic = async (userInfo) => {
   return new Promise((resolve, reject) => {
-
-
     const snsTopic = new AWS.SNS({ apiVersion: '2010-03-31' });
 
     const SNSMessageParams = {
         Message: JSON.stringify({
             default: 'User submitted the assignment',
-            submissionId:userInfo.submission_id,
+            submissionId:userInfo.submissionId,
             email: userInfo.email,
-            assignmentId:userInfo.assignment_id,
-            submissionUrl: userInfo.url,
+            assignmentId:userInfo.assignmentId,
+            submissionUrl: userInfo.submissionUrl,
             reminingAttempts:userInfo.reminingAttempts,
             availableAttempts: userInfo.availableAttempts
         }),
