@@ -383,7 +383,7 @@ const submissionPost = async (request, response) => {
                           };
                         setSuccessfulResponse(responseData, response);
                         logger.info('Post hit api for /v1/sumissions/');
-                        const attempts = submissionDetails.availableAttempts - submissionDetails.remainAttempts + 1 ;
+                        const attempts = parseInt(submissionDetails.availableAttempts) - (parseInt(submissionDetails.remainAttempts) + 1) ;
                         const userInfo = {
                             email: credentials.username,
                             assignmentId:createSubmission.assignment_id,
