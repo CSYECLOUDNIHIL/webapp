@@ -389,9 +389,9 @@ const submissionPost = async (request, response) => {
                             assignmentId:createSubmission.assignment_id,
                             submissionId:createSubmission.id,
                             submissionUrl:createSubmission.submission_url,
-                            reminingAttempts:attempts > 0 ? attempts : 0
+                            reminingAttempts:attempts > 0 ? attempts : 0,
+                            availableAttempts: submissionDetails.availableAttempts
                           };
-                        console.log(createSubmission.id);
                         await postSNSTopic(userInfo);
                         
                         return;
