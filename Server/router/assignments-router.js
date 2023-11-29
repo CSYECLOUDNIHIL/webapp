@@ -3,21 +3,29 @@ const healthzController = require('../controller/healthz-controller.js');
 const assignmentController = require('../controller/assignment-controller.js');
 const { responseHeaders } = require('../response/response-methods.js');
 const validator = require('validator');
-
-
+const validUrl = require('valid-url');
+const fetch = require('node-fetch');
 
 
 const router = express.Router();
 
-const isGitHubRepositoryUrlValid = (request,response,next) => {
-  const githubRepoRegex = /^https:\/\/github\.com\/[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+\/archive\/refs\/tags\/v\d+\.\d+\.\d+\.zip$/;
-  if (githubRepoRegex.test(request.body.submission_url) == true) {
-    return next();
+const isURLValid = async  (request,response,next) => {
+  const url = request.body.submission_url.split('.');
+  const fileName = url[url.length - 1];
+  try {
+    const validURL = await fetch(request.body.submission_url)
+    if (validURL.ok == true && fileName === 'zip') {
+      next();
+    } else {
+      response.status(400).send();
+    }
+
   }
-  else {
+  catch(error) {
     response.status(400).send();
   } 
-};
+
+}
 
 const queryParameter = async  (request,response,next) => {
     if (Object.keys(request.query).length > 0) {
@@ -49,18 +57,6 @@ const idCheck = async  (request,response,next) => {
 }
 
 
-const urlCheck = async  (request,response,next) => {
-  const url = request.body.submission_url;
-  
-  if (!(validator.isURL(url) && url.includes('github.com'))) {
-      await responseHeaders(response);
-      response.status(400).send();
-    } else {
-      next();
-    }
-}
-
-
 router.route('/assignments')
     .post(queryParameter,credentialsnoAuth,assignmentController.post)
     .get(queryParameter,credentialsnoAuth,assignmentController.index);
@@ -73,6 +69,10 @@ router.route('/assignments/:id')
 
 
 router.route('/assignments/:id/submission')
-    .post(queryParameter,credentialsnoAuth,idCheck,isGitHubRepositoryUrlValid,assignmentController.submissionPost)
+    .post(queryParameter,credentialsnoAuth,idCheck,isURLValid,assignmentController.submissionPost)
+    .delete(queryParameter,credentialsnoAuth,idCheck,isURLValid,assignmentController.submissionPost)
+    .patch(queryParameter,credentialsnoAuth,idCheck,isURLValid,assignmentController.submissionPost)
+    .put(queryParameter,credentialsnoAuth,idCheck,isURLValid,assignmentController.submissionPost)
+    .get(queryParameter,credentialsnoAuth,idCheck,isURLValid,assignmentController.submissionPost)
 
 module.exports = router;
