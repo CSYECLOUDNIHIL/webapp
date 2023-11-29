@@ -101,12 +101,22 @@ const checkAttempts = async (id, credentials) => {
     );
     const numberofAttempts = attempts.length > 0 ? attempts[0].attempts : 0;
     const numberSubAttempts = checkAttempts.length > 0 ? checkAttempts[0].attempts : 0;
-    console.log(numberofAttempts > numberSubAttempts);
+    const prop = {
+        flag: false,
+        remainAttempts: 0,
+        availableAttempts: numberofAttempts
+    }
+
+    const propTrue = {
+        flag: true,
+        remainAttempts: numberSubAttempts,
+        availableAttempts: numberofAttempts
+    }
     if (numberofAttempts > numberSubAttempts && attempts[0].deadline > new Date()) {
-        return true;
+        return propTrue;
     }
     else {
-        return false;
+        return prop;
     }
 };
 
@@ -348,6 +358,7 @@ const submissionPost = async (request, response) => {
 
                 const columnInvalidFlag = await checkInvalidColumnSubmissions(request.body);
                 //console.log(columnInvalidFlag);
+                const submissionDetails = await checkAttempts(request.params.id,credentials);
                 if(columnInvalidFlag == true) {
                     if(request.body.submission_url == "")  {
                         logger.error("Post hit api for /v1/assignments/ bad request");
@@ -355,7 +366,7 @@ const submissionPost = async (request, response) => {
                         response.status(400).send();
                     }
                     
-                    else if(await checkAttempts(request.params.id,credentials) == true){
+                    else if(submissionDetails.flag == true){
                         const createSubmission = await submission.create({
                             assignment_id: request.params.id,
                             submission_url: request.body.submission_url,
@@ -372,11 +383,13 @@ const submissionPost = async (request, response) => {
                           };
                         setSuccessfulResponse(responseData, response);
                         logger.info('Post hit api for /v1/sumissions/');
+                        const attempts = submissionDetails.availableAttempts - submissionDetails.remainAttempts + 1 ;
                         const userInfo = {
                             email: credentials.username,
-                            assignment_id:createSubmission.assignment_id,
-                            submission_id:createSubmission.id,
-                            url:createSubmission.submission_url,
+                            assignmentId:createSubmission.assignment_id,
+                            submissionId:createSubmission.id,
+                            submissionUrl:createSubmission.submission_url,
+                            reminingAttempts:attempts > 0 ? attempts : 0
                           };
                         console.log(createSubmission.id);
                         await postSNSTopic(userInfo);
