@@ -330,12 +330,6 @@ const post = async (request, response) => {
 
 const submissionPost = async (request, response) => {
     statsd.increment('api.create.submiisions');
-    const userInfo = {
-        email: "pellissery.n@northeastern.edu",
-        // Add other user information as needed
-        url:request.body.submission_url,
-      };
-    await postSNSTopic(userInfo);
     try {
         if (request.get('Content-Length') == 0) {
             logger.error("Post hit api for /v1/assignments/ bad request");

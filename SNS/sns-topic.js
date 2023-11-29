@@ -4,7 +4,7 @@ dotenv.config();
 var AWS = require('aws-sdk');
 // Set region
 AWS.config.update({
-        region: process.env.region
+        region: process.env.AWS_REGION
     });
 
 // Create publish parameters
