@@ -56,4 +56,5 @@ aws acm import-certificate \
     --private-key file:""C:\Users\nihil\Downloads\demo_nihiljosephpellissery_me\server-key.pem" \
     --region "us-east-1"
 
+
 this assignment will change the v1 to v2 and then run the ami
