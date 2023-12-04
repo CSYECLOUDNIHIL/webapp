@@ -76,29 +76,29 @@ jobs:
           source .env 
           npm test
                 
-#      - name: creating the aws cli configuration in yaml
-#        uses: aws-actions/configure-aws-credentials@v1
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
- #         aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-#          aws-region: ${{ secrets.AWS_REGION }}
-#      - name: Build packer
-#        run: |
-#          cd packer
-#          packer init aws-debian.pkr.hcl
-#          packer build \
- #           -var 'ami_name=${{secrets.AMI_NAME}}' \
- #           -var 'ami_termination_flag=${{secrets.AMI_TERMINATION_FLAG}}' \
- #           -var 'ami_device_name=${{secrets.AMI_DEVICE_NAME}}' \
- #           -var 'ami_volume_size=${{secrets.AMI_VOLUME_SIZE}}' \
- #           -var 'ami_volume_type=${{secrets.AMI_VOLUME_TYPE}}' \
- #           -var 'ami_source_name=${{secrets.AMI_SOURCE_NAME}}' \
- #           -var 'ssh_username=${{secrets.AMI_SSH_USERNAME}}' \
- #           -var 'instance_type=${{secrets.AMI_INSTANCE_TYPE}}' \
- #           -var 'aws_ami_owner_dev=${{secrets.AWS_DEV_ID}}' \
- #           -var 'aws_ami_owner_demo=${{secrets.AWS_DEMO_ID}}' \
-#            -var 'aws_ami_region=${{secrets.AWS_REGION}}' \
- #           -var "path=/home/runner/work/webapp/webapp/webapp.zip" aws-debian.pkr.hcl
+      - name: creating the aws cli configuration in yaml
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Build packer
+        run: |
+          cd packer
+          packer init aws-debian.pkr.hcl
+          packer build \
+            -var 'ami_name=${{secrets.AMI_NAME}}' \
+            -var 'ami_termination_flag=${{secrets.AMI_TERMINATION_FLAG}}' \
+            -var 'ami_device_name=${{secrets.AMI_DEVICE_NAME}}' \
+            -var 'ami_volume_size=${{secrets.AMI_VOLUME_SIZE}}' \
+            -var 'ami_volume_type=${{secrets.AMI_VOLUME_TYPE}}' \
+            -var 'ami_source_name=${{secrets.AMI_SOURCE_NAME}}' \
+            -var 'ssh_username=${{secrets.AMI_SSH_USERNAME}}' \
+            -var 'instance_type=${{secrets.AMI_INSTANCE_TYPE}}' \
+            -var 'aws_ami_owner_dev=${{secrets.AWS_DEV_ID}}' \
+            -var 'aws_ami_owner_demo=${{secrets.AWS_DEMO_ID}}' \
+            -var 'aws_ami_region=${{secrets.AWS_REGION}}' \
+            -var "path=/home/runner/work/webapp/webapp/webapp.zip" aws-debian.pkr.hcl
 
       - name: creating the Demo aws cli configuration in yaml
         uses: aws-actions/configure-aws-credentials@v1
@@ -112,12 +112,12 @@ jobs:
               pwd
               ls -a
 
-#      - name: Fetch the AMI ID built by packer built
-#        run: |
-#          cd packer
-#          ls -a
-#          echo PACKER_AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2) >> $GITHUB_ENV
-#        shell: bash 
+      - name: Fetch the AMI ID built by packer built
+        run: |
+          cd packer
+          ls -a
+          echo PACKER_AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2) >> $GITHUB_ENV
+        shell: bash 
 
       - name: Fetch the secret key values
         run: |
@@ -126,7 +126,7 @@ jobs:
 
       - name: Update the ec2 Launch Template
         run: |
-          aws ec2 create-launch-template-version --launch-template-name "${{secrets.AWS_LAUNCH_TEMPLATE}}" --source-version 1 --launch-template-data '{"ImageId":"ami-0a943b5480663c5ea"}'
+          aws ec2 create-launch-template-version --launch-template-name "${{secrets.AWS_LAUNCH_TEMPLATE}}" --source-version 1 --launch-template-data '{"ImageId":"${{ env.PACKER_AMI_ID }}"}'
           echo "Updated template is created"
 
       - name: Attach the ec2 template to the autoscaling group
