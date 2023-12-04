@@ -144,8 +144,8 @@ jobs:
         run: |
           aws autoscaling start-instance-refresh --auto-scaling-group-name "${{ secrets.AWS_AUTO_SCALING_GROUP }}"
           echo "Instance refresh is complete with the latest template and in progress"
-          instance_refresh_flag=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${{ secrets.AWS_AUTO_SCALING_GROUP }}" --query "InstanceRefreshes[0].Status" --output text)
           while true; do
+          instance_refresh_flag=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${{ secrets.AWS_AUTO_SCALING_GROUP }}" --query "InstanceRefreshes[0].Status" --output text)
           if [ "$instance_refresh_flag" = "Successful" ]; then
           echo "Instance refresh Successful."
           exit 0
