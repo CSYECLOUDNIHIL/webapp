@@ -117,4 +117,24 @@ jobs:
           cd packer
           ls -a
           echo PACKER_AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2) >> $GITHUB_ENV
-        shell: bash      
+        shell: bash 
+
+      - name: Fetch the secret key values
+        run: |
+          AWS_AUTO_SCALING_GROUP="${{ secrets.AWS_AUTO_SCALING_GROUP }}"
+          AWS_LAUNCH_TEMPLATE="${secrets.AWS_LAUNCH_TEMPLATE}"
+
+      - name: Update the ec2 Launch Template
+        run: |
+          aws ec2 create-launch-template-version --launch-template-name "$AWS_LAUNCH_TEMPLATE*" --source-version 1 --launch-template-data '{"ImageId":"${{ env.PACKER_AMI_ID }}"}'
+          echo "Updated template is created"
+
+      - name: Attach the ec2 template to the autoscaling group
+        run: |
+          launchTemplateId=$(aws ec2 describe-launch-templates \
+          --launch-template-names "$AWS_LAUNCH_TEMPLATE*" \
+          --query 'LaunchTemplates[0].LaunchTemplateId' \
+          --output text)
+          echo $launchTemplateId
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name "$AWS_AUTO_SCALING_GROUP*" --launch-template LaunchTemplateId=$launchTemplateId,Version='$Latest'
+          echo "Updated autoscaling with the ec2 Launch Template"
