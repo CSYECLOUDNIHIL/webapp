@@ -1,4 +1,4 @@
-# assignment3
+# assignment10
 This README provides information on how to set up, run, and use your Node.js application. Please follow the instructions below to get started.
 
 Table of Contents
@@ -49,3 +49,11 @@ bash
 Copy code
 npm test
 This will execute any unit or integration tests you have set up for the application
+
+Command to install the certificate
+aws acm import-certificate \
+    --certificate file: "C:\Users\nihil\Downloads\demo_nihiljosephpellissery_me\demo_nihiljosephpellissery_me.crt"
+    --private-key file:""C:\Users\nihil\Downloads\demo_nihiljosephpellissery_me\server-key.pem" \
+    --region "us-east-1"
+
+this assignment will change the v1 to v2 and then run the ami
