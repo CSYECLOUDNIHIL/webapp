@@ -103,8 +103,8 @@ jobs:
       - name: creating the Demo aws cli configuration in yaml
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_DEMO_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_DEMO_SECRET_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: check current path
@@ -115,5 +115,6 @@ jobs:
       - name: Fetch the AMI ID built by packer built
         run: |
           cd packer
+          ls -a
           echo PACKER_AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2) >> $GITHUB_ENV
         shell: bash      
