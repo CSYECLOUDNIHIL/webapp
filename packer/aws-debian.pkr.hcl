@@ -169,4 +169,11 @@ build {
   provisioner "shell" {
     script = "./cloud-watch.sh"
   }
+
+  post-processors = [
+  {
+    type   = "manifest"
+    output = "manifest.json"
+  }
+]
 }
