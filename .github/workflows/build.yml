@@ -99,3 +99,15 @@ jobs:
             -var 'aws_ami_owner_demo=${{secrets.AWS_DEMO_ID}}' \
             -var 'aws_ami_region=${{secrets.AWS_REGION}}' \
             -var "path=/home/runner/work/webapp/webapp/webapp.zip" aws-debian.pkr.hcl
+
+      - name: creating the Demo aws cli configuration in yaml
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Fetch the AMI ID built by packer built
+        run: |
+          echo PACKER_AMI_ID=$(jq -r '.builds[-1].artifact_id' ./packer/manifest.json | cut -d ":" -f2) >> $GITHUB_ENV
+        shell: bash      
