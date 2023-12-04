@@ -126,15 +126,15 @@ jobs:
 
       - name: Update the ec2 Launch Template
         run: |
-          aws ec2 create-launch-template-version --launch-template-name "$AWS_LAUNCH_TEMPLATE" --source-version 1 --launch-template-data '{"ImageId":"ami-0a943b5480663c5ea"}'
+          aws ec2 create-launch-template-version --launch-template-name "${{secrets.AWS_LAUNCH_TEMPLATE}}" --source-version 1 --launch-template-data '{"ImageId":"ami-0a943b5480663c5ea"}'
           echo "Updated template is created"
 
       - name: Attach the ec2 template to the autoscaling group
         run: |
           launchTemplateId=$(aws ec2 describe-launch-templates \
-          --launch-template-names $AWS_LAUNCH_TEMPLATE \
+          --launch-template-names "${{secrets.AWS_LAUNCH_TEMPLATE}}" \
           --query 'LaunchTemplates[0].LaunchTemplateId' \
           --output text)
           echo $launchTemplateId
-          aws autoscaling update-auto-scaling-group --auto-scaling-group-name $AWS_AUTO_SCALING_GROUP --launch-template LaunchTemplateId=$launchTemplateId,Version='$Latest'
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name "${{ secrets.AWS_AUTO_SCALING_GROUP }}" --launch-template LaunchTemplateId=$launchTemplateId,Version='$Latest'
           echo "Updated autoscaling with the ec2 Launch Template"
