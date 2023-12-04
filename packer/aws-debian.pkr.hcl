@@ -170,10 +170,12 @@ build {
     script = "./cloud-watch.sh"
   }
 
-  post-processors = [
-  {
-    type   = "manifest"
-    output = "manifest.json"
-  }
-]
+  post-processor "manifest" {
+        output = "manifest.json"
+        strip_path = true
+        custom_data = {
+          my_custom_data = "example"
+        }
+    }
+
 }
