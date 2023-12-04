@@ -122,7 +122,7 @@ jobs:
       - name: Fetch the secret key values
         run: |
           AWS_AUTO_SCALING_GROUP="${{ secrets.AWS_AUTO_SCALING_GROUP }}"
-          AWS_LAUNCH_TEMPLATE="${secrets.AWS_LAUNCH_TEMPLATE}"
+          AWS_LAUNCH_TEMPLATE="${{secrets.AWS_LAUNCH_TEMPLATE}}"
 
       - name: Update the ec2 Launch Template
         run: |
