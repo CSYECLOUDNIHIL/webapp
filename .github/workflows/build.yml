@@ -109,5 +109,5 @@ jobs:
 
       - name: Fetch the AMI ID built by packer built
         run: |
-          echo PACKER_AMI_ID=$(jq -r '.builds[-1].artifact_id' ./packer/manifest.json | cut -d ":" -f2) >> $GITHUB_ENV
+          echo PACKER_AMI_ID=$(jq -r '.builds[-1].artifact_id' ./manifest.json | cut -d ":" -f2) >> $GITHUB_ENV
         shell: bash      
